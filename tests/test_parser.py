@@ -56,3 +56,15 @@ def test_pp():
     # OK
     '''
     pass
+
+
+@raises(MalformedXML)
+def test_malformed():
+    s = io.BytesIO(b'<foo><bar>xxx</foo></bar>')
+    try:
+        t = xml(root(s))
+        t
+    except MalformedXML:
+        pass
+    finally:
+        assert_equal(1, 1)

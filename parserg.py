@@ -9,6 +9,11 @@ Comment = namedtuple('Comment', 'comment')
 Doctype = namedtuple('Doctype', 'doctype')
 Tag = namedtuple('Tag', 'name attrs children')
 
+
+class MalformedXML(Exception):
+    pass
+
+
 # Parser
 
 def xml(token_stream):
@@ -19,17 +24,28 @@ def xml(token_stream):
         if k == 'inst':
             top(stack).children.append(Inst(t))
         elif k == 'otag':
-            stack.append(Tag(t, [], []))           # SHIFT
+            stack.append(Tag(t, [], []))            # SHIFT
         elif k == 'text':
-            top(stack).children.append(Text(t))    # SELF INSERT
+            top(stack).children.append(Text(t))     # SELF INSERT
         elif k == 'comment':
-            top(stack).children.append(Comment(t)) # SELF INSERT
+            top(stack).children.append(Comment(t))  # SELF INSERT
         elif k == 'doctype':
-            top(stack).children.append(Doctype(t)) # SELF INSERT
+            top(stack).children.append(Doctype(t))  # SELF INSERT
         elif k == 'etag':
-            sub = stack.pop()                      # REDUCE
+            sub = stack.pop()                       # REDUCE
+            tns = tagname(sub.name)
+            tnt = tagname(t)
+            assert tns == tnt, "Wrong open/close tags: %s | %s" % (tns, tnt)
+            if tns != tnt:
+                raise MalformedXML(top(stack), sub)
             top(stack).children.append(sub)
     return fst(stack)
+
+
+def tagname(tag):
+    import re
+    rx = b'</?(?P<tag>[^ >]+).*>'
+    return re.match(rx, tag).groupdict()['tag']
 
 
 def fst(s):
