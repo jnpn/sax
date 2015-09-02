@@ -66,57 +66,70 @@
   in etag in root in etag in root in otag in root in otag in root in otag in root
   in otag in root in text in root in etag in root in otag in root in otag in root
   in text in root in etag in root in text in root in etag in root in otag in root
-  in text in root in etag in root in etag in root in otag in root in otag in root 
-  in etag in root in otag in root in etag in root in otag in root in otag in root 
-  in otag in root in text in root in etag in root in otag in root in text in root 
-  in etag in root in etag in root in otag in root in otag in root in otag in root 
-  in otag in root in etag in root in otag in root in otag in root in etag in root 
-  in otag in root in etag in root in otag in root in otag in root in otag in root 
-  in text in root in otag in root in text in root in etag in root in etag in root 
-  in etag in root in otag in root in otag in root in otag in root in otag in root 
-  in otag in root in etag in root in otag in root in etag in root in otag in root 
-  in otag in root in otag in root in text in root in etag in root in etag in root 
-  in otag in root in otag in root in text in root in etag in root in otag in root 
-  in text in root in etag in root in etag in root in otag in root in otag in root 
-  in otag in root in otag in root in etag in root in otag in root in etag in root 
-  in otag in root in otag in root in otag in root in text in root in etag in root 
-  in etag in root in otag in root in otag in root in text in root in etag in root 
-  in otag in root in text in root in etag in root in etag in root in otag in root 
-  in otag in root in otag in root in otag in root in etag in root in otag in root 
-  in etag in root in otag in root in otag in root in otag in root in text in root 
-  in etag in root in etag in root in otag in root in otag in root in text in root 
-  in etag in root in otag in root in text in root in etag in root in etag in root 
-  in otag in root in otag in root in otag in root in otag in root in etag in root 
-  in otag in root in etag in root in otag in root in otag in root in otag in root 
-  in text in root in otag in root in text in root in etag in root in text in root 
-  in otag in root in text in root in etag in root in etag in root in etag in root 
-  in otag in root in otag in root in otag in root in otag in root in otag in root 
-  in otag in root in etag in root in etag in root in otag in root in otag in root 
-  in otag in root in otag in root in text in root in etag in root in etag in root 
-  in etag in root in otag in root in otag in root in otag in root in text in root 
-  in etag in root in otag in root in text in root in etag in root in etag in root 
-  in otag in root in otag in root in text in root in etag in root in etag in root 
-  in otag in root in otag in root in otag in root in text in root in etag in root 
-  in etag in root in etag in root in etag in root in otag in root in otag in root 
-  in otag in root in otag in root in otag in root in etag in root in etag in root 
-  in otag in root in otag in root in otag in root in text in root in etag in root 
-  in etag in root in otag in root in otag in root in text in root in etag in root 
-  in otag in root in text in root in etag in root in etag in root in otag in root 
-  in otag in root in otag in root in otag in root in otag in root in etag in root 
-  in etag in root in otag in root in otag in root in otag in root in text in root 
-  in etag in root in etag in root in otag in root in otag in root in text in root 
-  in etag in root in otag in root in text in root in etag in root in otag in root 
-  in otag in root in text in root in etag in root in etag in root in etag in root 
-  in otag in root in otag in root in otag in root in otag in root in otag in root 
-  in etag in root in etag in root in otag in root in otag in root in otag in root 
-  in text in root in etag in root in etag in root in otag in root in otag in root 
-  in text in root in etag in root in otag in root in text in root in etag in root 
-  in otag in root in text in root in etag in root in otag in root in otag in root 
+  in text in root in etag in root in etag in root in otag in root in otag in root
+  in etag in root in otag in root in etag in root in otag in root in otag in root
+  in otag in root in text in root in etag in root in otag in root in text in root
+  in etag in root in etag in root in otag in root in otag in root in otag in root
+  in otag in root in etag in root in otag in root in otag in root in etag in root
+  in otag in root in etag in root in otag in root in otag in root in otag in root
+  in text in root in otag in root in text in root in etag in root in etag in root
+  in etag in root in otag in root in otag in root in otag in root in otag in root
+  in otag in root in etag in root in otag in root in etag in root in otag in root
+  in otag in root in otag in root in text in root in etag in root in etag in root
+  in otag in root in otag in root in text in root in etag in root in otag in root
+  in text in root in etag in root in etag in root in otag in root in otag in root
+  in otag in root in otag in root in etag in root in otag in root in etag in root
+  in otag in root in otag in root in otag in root in text in root in etag in root
+  in etag in root in otag in root in otag in root in text in root in etag in root
+  in otag in root in text in root in etag in root in etag in root in otag in root
+  in otag in root in otag in root in otag in root in etag in root in otag in root
+  in etag in root in otag in root in otag in root in otag in root in text in root
+  in etag in root in etag in root in otag in root in otag in root in text in root
+  in etag in root in otag in root in text in root in etag in root in etag in root
+  in otag in root in otag in root in otag in root in otag in root in etag in root
+  in otag in root in etag in root in otag in root in otag in root in otag in root
+  in text in root in otag in root in text in root in etag in root in text in root
+  in otag in root in text in root in etag in root in etag in root in etag in root
+  in otag in root in otag in root in otag in root in otag in root in otag in root
+  in otag in root in etag in root in etag in root in otag in root in otag in root
+  in otag in root in otag in root in text in root in etag in root in etag in root
+  in etag in root in otag in root in otag in root in otag in root in text in root
+  in etag in root in otag in root in text in root in etag in root in etag in root
+  in otag in root in otag in root in text in root in etag in root in etag in root
+  in otag in root in otag in root in otag in root in text in root in etag in root
+  in etag in root in etag in root in etag in root in otag in root in otag in root
+  in otag in root in otag in root in otag in root in etag in root in etag in root
+  in otag in root in otag in root in otag in root in text in root in etag in root
+  in etag in root in otag in root in otag in root in text in root in etag in root
+  in otag in root in text in root in etag in root in etag in root in otag in root
+  in otag in root in otag in root in otag in root in otag in root in etag in root
+  in etag in root in otag in root in otag in root in otag in root in text in root
+  in etag in root in etag in root in otag in root in otag in root in text in root
+  in etag in root in otag in root in text in root in etag in root in otag in root
+  in otag in root in text in root in etag in root in etag in root in etag in root
+  in otag in root in otag in root in otag in root in otag in root in otag in root
+  in etag in root in etag in root in otag in root in otag in root in otag in root
+  in text in root in etag in root in etag in root in otag in root in otag in root
+  in text in root in etag in root in otag in root in text in root in etag in root
+  in otag in root in text in root in etag in root in otag in root in otag in root
   in peek
 
 *** Fix: sys.setrecursionlimit(1800)
     (previously set to 2000, but 1800 is fine here)
     cv.xml prints.
+
+    Strangely, cv.xml is neither that deep:
+
+    @>>> import sys
+    @>>> sys.setrecursionlimit(1800)
+    @>>> t = xml(root(open('./samples/cv.xml', 'rb')))
+    @>>> xmldepth(t)
+    11
+
+    Nor that long:
+
+    @>>> len(list(root(open('./samples/cv.xml', 'rb'))))
+    988
 
     Need to rewrite as a single while True: generator ?
 
@@ -158,4 +171,3 @@
      recursion, REDUCE, SELF INSERT)
 
      Root.parse -> {...}, (Text | Inst | ...).parse -> ...
-
