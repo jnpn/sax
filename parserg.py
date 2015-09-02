@@ -98,17 +98,17 @@ def pp(xml, inds=0, indc='  '):
         pic('[unknown]', xml)
 
 
-def xmldepth(xml, d=0):
+def xmldepth(xml):
+
+    def isnode(n):
+        return n == 'Root' or n == 'Tag'
+
+    def isleaf(n):
+        return n == 'Inst' or n == 'Text' or n == 'Doctype' or n == 'Comment'
+
     k = xml.__class__.__name__
-    if k == 'Root':
+
+    if isnode(k):
         return 1 + max(map(xmldepth, xml.children), default=0)
-    elif k == 'Tag':
-        return 1 + max(map(xmldepth, xml.children), default=0)
-    elif k == 'Inst':
-        return 1
-    elif k == 'Text':
-        return 1
-    elif k == 'Doctype':
-        return 1
-    elif k == 'Comment':
+    elif isleaf(k):
         return 1
