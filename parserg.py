@@ -96,3 +96,19 @@ def pp(xml, inds=0, indc='  '):
         pic(k, xml.inst)
     else:
         pic('[unknown]', xml)
+
+
+def xmldepth(xml, d=0):
+    k = xml.__class__.__name__
+    if k == 'Root':
+        return 1 + max(map(xmldepth, xml.children), default=0)
+    elif k == 'Tag':
+        return 1 + max(map(xmldepth, xml.children), default=0)
+    elif k == 'Inst':
+        return 1
+    elif k == 'Text':
+        return 1
+    elif k == 'Doctype':
+        return 1
+    elif k == 'Comment':
+        return 1
