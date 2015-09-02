@@ -40,13 +40,17 @@ def pp(xml):
         for c in xml.children:
             pp(c)
     elif k == 'Text':
-        print('Text', xml.text)
+        print('Text', xml.text.decode('utf8').strip())
+    elif k == 'Comment':
+        print('comment', xml.comment.decode('utf8').strip())
+    elif k == 'Doctype':
+        print('Doctype', xml.doctype.decode('utf8').strip())
     elif k == 'Tag':
         print(xml.name)
         for c in xml.children:
             pp(c)
     elif k == 'Inst':
-        print('Inst', xml.inst)
+        print('Inst', k, xml.inst.decode('utf8').strip())
     else:
         print('[unknown]', xml)
 
