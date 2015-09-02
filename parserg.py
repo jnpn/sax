@@ -1,4 +1,8 @@
 from collections import namedtuple
+import io
+
+from saxg import root
+
 
 Root = namedtuple('Root', 'children')
 Inst = namedtuple('Inst', 'inst')
@@ -60,15 +64,31 @@ Text duh
 # OK
 '''
 
+
+
+def strcopy(buf):
+    s = buf.read()
+    buf.seek(0)
+    return s
+
+
+# tests
+
 def test_xml():
-    return xml(root(open('./samples/dbus.xml', 'rb')))
+    s = open('./samples/dbus.xml', 'rb')
+    print(strcopy(s))
+    return xml(root(s))
 
 
 def test_0():
-    t = xml(root(io.BytesIO(b'<foo>x</foo>')))
+    s = io.BytesIO(b'<foo>x</foo>')
+    print(strcopy(s))
+    t = xml(root(s))
     return t
 
 def test_1():
     '''bug'''
-    t = xml(root(io.BytesIO(b'<foo><bar>duh</bar></foo>')))
+    s = io.BytesIO(b'<foo><bar>duh</bar></foo>')
+    print(strcopy(s))
+    t = xml(root(s))
     return t
