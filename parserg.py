@@ -28,12 +28,10 @@ def xml(token_stream):
         elif k == 'doctype':
             stack[-1].children.append(Doctype(t))
         elif k == 'etag':
-            print('[end][pre]', (stack[-3:]))
             sub = stack.pop();
             stack[-1].children.append(sub)
-            print('[end][post]', stack[-3:])
-    print(stack)
     return stack[0]
+
 
 def pp(xml):
     k = xml.__class__.__name__
