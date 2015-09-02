@@ -17,9 +17,9 @@ class MalformedXML(Exception):
 # Parser
 
 def xml(token_stream):
-    stack = []
 
-    stack.append(Root([]))
+    stack = [Root([])]
+
     for k, t in token_stream:
         if k == 'inst':
             top(stack).children.append(Inst(t))
