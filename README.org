@@ -1,0 +1,23 @@
+
+* Tokenizer
+
+** add comment support
+
+** add doctype support
+
+** factor saxg code
+
+   most sub generators are the same
+
+** monadic parser ?
+
+* XML parser
+
+** Stream of inst | otag | etag | text -> Tree
+
+   stack shift reduce
+
+   inst -> push (Inst.)
+   otag -> push (Tag. ...)
+   text -> top.append it
+   etag -> t = pop; top.append it
