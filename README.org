@@ -9,15 +9,110 @@
 
    most sub generators are the same
 
-** monadic parser ?
+** large test, OpenDocument sample (34KB)
+   cv.xml
 
-** objectional parser ?
-   - no more explicit stateful stack recursion
-   - A Root object walk the stream. On certain conditions, it
-     will pass parsing to a new subclass (passing himself in need of
-     recursion, REDUCE, SELF INSERT)
+** TODO Bug: cv.xml uncovers an infinite loop in saxg
 
-     Root.parse -> {...}, (Text | Inst | ...).parse -> ...
+*** Trace. Warning, 98 lines
+
+  in test_xml_cv
+  in xml in root in inst in root in text in root in otag in root in otag in root
+  in otag in root in otag in root in otag in root in otag in root in otag in root
+  in otag in root in otag in root in otag in root in otag in root in otag in root
+  in otag in root in otag in root in otag in root in etag in root in otag in root
+  in otag in root in otag in root in etag in root in otag in root in otag in root
+  in etag in root in otag in root in otag in root in etag in root in otag in root
+  in otag in root in etag in root in otag in root in otag in root in etag in root
+  in otag in root in otag in root in etag in root in otag in root in otag in root
+  in etag in root in otag in root in otag in root in etag in root in otag in root
+  in otag in root in etag in root in otag in root in otag in root in etag in root
+  in otag in root in otag in root in etag in root in otag in root in otag in root
+  in etag in root in otag in root in otag in root in etag in root in otag in root
+  in otag in root in etag in root in otag in root in otag in root in etag in root
+  in otag in root in otag in root in etag in root in otag in root in otag in root
+  in etag in root in otag in root in otag in root in etag in root in otag in root
+  in otag in root in etag in root in otag in root in otag in root in etag in root
+  in otag in root in otag in root in etag in root in otag in root in otag in root
+  in etag in root in otag in root in otag in root in etag in root in otag in root
+  in otag in root in etag in root in otag in root in otag in root in etag in root
+  in otag in root in otag in root in etag in root in otag in root in otag in root
+  in etag in root in otag in root in otag in root in etag in root in otag in root
+  in otag in root in etag in root in otag in root in otag in root in etag in root
+  in otag in root in otag in root in etag in root in otag in root in otag in root
+  in etag in root in otag in root in otag in root in etag in root in otag in root
+  in otag in root in etag in root in otag in root in otag in root in etag in root
+  in otag in root in otag in root in etag in root in otag in root in otag in root
+  in etag in root in otag in root in otag in root in otag in root in etag in root
+  in otag in root in otag in root in etag in root in otag in root in otag in root
+  in otag in root in etag in root in otag in root in otag in root in etag in root
+  in otag in root in otag in root in etag in root in otag in root in otag in root
+  in etag in root in otag in root in otag in root in etag in root in otag in root
+  in otag in root in otag in root in etag in root in otag in root in otag in root
+  in etag in root in otag in root in otag in root in etag in root in otag in root
+  in otag in root in etag in root in otag in root in otag in root in etag in root
+  in otag in root in otag in root in etag in root in otag in root in otag in root
+  in etag in root in otag in root in otag in root in etag in root in otag in root
+  in otag in root in etag in root in otag in root in otag in root in etag in root
+  in otag in root in otag in root in etag in root in otag in root in otag in root
+  in etag in root in otag in root in otag in root in etag in root in otag in root
+  in otag in root in etag in root in otag in root in otag in root in etag in root
+  in otag in root in otag in root in etag in root in otag in root in otag in root
+  in etag in root in otag in root in otag in root in etag in root in etag in root
+  in otag in root in otag in root in otag in root in otag in root in otag in root
+  in otag in root in otag in root in otag in root in etag in root in otag in root
+  in otag in root in otag in root in otag in root in otag in root in otag in root
+  in otag in root in otag in root in otag in root in otag in root in text in root
+  in etag in root in etag in root in otag in root in otag in root in otag in root
+  in otag in root in text in root in etag in root in otag in root in otag in root
+  in text in root in etag in root in text in root in etag in root in otag in root
+  in text in root in etag in root in etag in root in otag in root in otag in root 
+  in etag in root in otag in root in etag in root in otag in root in otag in root 
+  in otag in root in text in root in etag in root in otag in root in text in root 
+  in etag in root in etag in root in otag in root in otag in root in otag in root 
+  in otag in root in etag in root in otag in root in otag in root in etag in root 
+  in otag in root in etag in root in otag in root in otag in root in otag in root 
+  in text in root in otag in root in text in root in etag in root in etag in root 
+  in etag in root in otag in root in otag in root in otag in root in otag in root 
+  in otag in root in etag in root in otag in root in etag in root in otag in root 
+  in otag in root in otag in root in text in root in etag in root in etag in root 
+  in otag in root in otag in root in text in root in etag in root in otag in root 
+  in text in root in etag in root in etag in root in otag in root in otag in root 
+  in otag in root in otag in root in etag in root in otag in root in etag in root 
+  in otag in root in otag in root in otag in root in text in root in etag in root 
+  in etag in root in otag in root in otag in root in text in root in etag in root 
+  in otag in root in text in root in etag in root in etag in root in otag in root 
+  in otag in root in otag in root in otag in root in etag in root in otag in root 
+  in etag in root in otag in root in otag in root in otag in root in text in root 
+  in etag in root in etag in root in otag in root in otag in root in text in root 
+  in etag in root in otag in root in text in root in etag in root in etag in root 
+  in otag in root in otag in root in otag in root in otag in root in etag in root 
+  in otag in root in etag in root in otag in root in otag in root in otag in root 
+  in text in root in otag in root in text in root in etag in root in text in root 
+  in otag in root in text in root in etag in root in etag in root in etag in root 
+  in otag in root in otag in root in otag in root in otag in root in otag in root 
+  in otag in root in etag in root in etag in root in otag in root in otag in root 
+  in otag in root in otag in root in text in root in etag in root in etag in root 
+  in etag in root in otag in root in otag in root in otag in root in text in root 
+  in etag in root in otag in root in text in root in etag in root in etag in root 
+  in otag in root in otag in root in text in root in etag in root in etag in root 
+  in otag in root in otag in root in otag in root in text in root in etag in root 
+  in etag in root in etag in root in etag in root in otag in root in otag in root 
+  in otag in root in otag in root in otag in root in etag in root in etag in root 
+  in otag in root in otag in root in otag in root in text in root in etag in root 
+  in etag in root in otag in root in otag in root in text in root in etag in root 
+  in otag in root in text in root in etag in root in etag in root in otag in root 
+  in otag in root in otag in root in otag in root in otag in root in etag in root 
+  in etag in root in otag in root in otag in root in otag in root in text in root 
+  in etag in root in etag in root in otag in root in otag in root in text in root 
+  in etag in root in otag in root in text in root in etag in root in otag in root 
+  in otag in root in text in root in etag in root in etag in root in etag in root 
+  in otag in root in otag in root in otag in root in otag in root in otag in root 
+  in etag in root in etag in root in otag in root in otag in root in otag in root 
+  in text in root in etag in root in etag in root in otag in root in otag in root 
+  in text in root in etag in root in otag in root in text in root in etag in root 
+  in otag in root in text in root in etag in root in otag in root in otag in root 
+  in peek
 
 * XML parser
 
@@ -47,3 +142,14 @@
    on the fly. *Tokenizing sugar*...
 
    Bug fixed (80% confidence)
+
+** monadic parser ?
+
+** objectional parser ?
+   - no more explicit stateful stack recursion
+   - A Root object walk the stream. On certain conditions, it
+     will pass parsing to a new subclass (passing himself in need of
+     recursion, REDUCE, SELF INSERT)
+
+     Root.parse -> {...}, (Text | Inst | ...).parse -> ...
+
