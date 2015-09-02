@@ -42,23 +42,30 @@ def top(s):
 
 # Pretty Printer
 
-def pp(xml):
+def pp(xml, inds=0, indc='  '):
+
+    def clean(s):
+        import re
+        s = s.decode('utf8').strip()
+        return re.sub(r'[\t\r\n ]+', ' ', s)
+
     k = xml.__class__.__name__
     if k == 'Root':
-        print('Root')
+        print(indc * inds, 'Root')
         for c in xml.children:
-            pp(c)
+            pp(c, inds + 1)
     elif k == 'Text':
-        print('Text', xml.text.decode('utf8').strip())
+        print(indc * inds, 'Text', clean(xml.text))
     elif k == 'Comment':
-        print('comment', xml.comment.decode('utf8').strip())
+        print(indc * inds, 'comment', clean(xml.comment))
     elif k == 'Doctype':
-        print('Doctype', xml.doctype.decode('utf8').strip())
+        print(indc * inds, 'Doctype', clean(xml.doctype))
     elif k == 'Tag':
-        print(xml.name)
+        print(indc * inds, clean(xml.name) + '[otag]')
         for c in xml.children:
-            pp(c)
+            pp(c, inds + 1)
+        print(indc * inds, clean(xml.name) + '[etag]')
     elif k == 'Inst':
-        print('Inst', k, xml.inst.decode('utf8').strip())
+        print(indc * inds, 'Inst', k, clean(xml.inst))
     else:
-        print('[unknown]', xml)
+        print(indc * inds, '[unknown]', xml)
