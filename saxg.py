@@ -75,10 +75,17 @@ def otag(s):
     '''
     c = s.read(1)
     a = b''
+    selfclosing = False
     while c != b'>' and c != b'':
         a += c
         c = s.read(1)
+
+    if c == b'>' and a[-1:] == b'/':
+        selfclosing = True
+
     yield ('otag', a + b'>') if c != b'' else ('error', a)
+    if selfclosing:
+        yield ('etag', a + b'>') # reuse the whole 'text' to allow checks
     yield from root(s)
 
 def etag(s):
