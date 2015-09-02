@@ -18,19 +18,19 @@ def xml(token_stream):
     stack.append(Root([]))
     for k, t in token_stream:
         if k == 'inst':
-            stack[-1].children.append(Inst(t))
+            top(stack).children.append(Inst(t))
         elif k == 'otag':
-            stack.append(Tag(t, [], []))
+            stack.append(Tag(t, [], []))           # SHIFT
         elif k == 'text':
-            stack[-1].children.append(Text(t))
+            top(stack).children.append(Text(t))    # SELF INSERT
         elif k == 'comment':
-            stack[-1].children.append(Comment(t))
+            top(stack).children.append(Comment(t)) # SELF INSERT
         elif k == 'doctype':
-            stack[-1].children.append(Doctype(t))
+            top(stack).children.append(Doctype(t)) # SELF INSERT
         elif k == 'etag':
-            sub = stack.pop();
-            stack[-1].children.append(sub)
-    return stack[0]
+            sub = stack.pop()                      # REDUCE
+            top(stack).children.append(sub)
+    return fst(stack)
 
 
 def pp(xml):
@@ -66,6 +66,13 @@ Text duh
 # OK
 '''
 
+
+def fst(s):
+    return s[0]
+
+
+def top(s):
+    return s[-1]
 
 
 def strcopy(buf):
