@@ -71,17 +71,17 @@ def pp(xml, inds=0, indc='  '):
         for c in xml.children:
             pp(c, inds + 1)
     elif k == 'Text':
-        print(indc * inds, 'Text', clean(xml.text))
+        print(indc * inds, k, clean(xml.text))
     elif k == 'Comment':
-        print(indc * inds, 'comment', clean(xml.comment))
+        print(indc * inds, k, clean(xml.comment))
     elif k == 'Doctype':
-        print(indc * inds, 'Doctype', clean(xml.doctype))
+        print(indc * inds, k, clean(xml.doctype))
     elif k == 'Tag':
         print(indc * inds, clean(xml.name) + '[otag]')
         for c in xml.children:
             pp(c, inds + 1)
         print(indc * inds, clean(xml.name) + '[etag]')
     elif k == 'Inst':
-        print(indc * inds, 'Inst', k, clean(xml.inst))
+        print(indc * inds, k, clean(xml.inst))
     else:
         print(indc * inds, '[unknown]', xml)
