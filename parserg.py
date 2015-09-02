@@ -69,9 +69,12 @@ def pp(xml, inds=0, indc='  '):
         s = s.decode('utf8').strip()
         return re.sub(r'[\t\r\n ]+', ' ', s)
 
-    def pic(k, t, post=''):
+    def pic(k, t, post=lambda k, v: k + ' ' + v):
         '''Print Indented and Clean'''
-        print(indc * inds, k, clean(t) + ' ' + post)
+        print(indc * inds, post(k, clean(t)))
+
+    def pre(c):
+        return lambda s: c + s
 
     k = xml.__class__.__name__
     if k == 'Root':
@@ -85,10 +88,10 @@ def pp(xml, inds=0, indc='  '):
     elif k == 'Doctype':
         pic(k, xml.doctype)
     elif k == 'Tag':
-        pic(k, xml.name, post='[otag]')
+        pic(k, xml.name)
         for c in xml.children:
             pp(c, inds + 1)
-        pic(k, xml.name, post='[etag]')
+        pic(k, xml.name, post=lambda k, v: ' /')
     elif k == 'Inst':
         pic(k, xml.inst)
     else:
