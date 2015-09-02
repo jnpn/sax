@@ -1,9 +1,13 @@
+import sys
 import io
 
-from nose.tools import assert_equal, raises
+from nose.tools import assert_equal, raises, assert_not_equal
 
 from saxg import root
 from parserg import Root, Comment, Doctype, Text, Inst, Tag, MalformedXML, xml
+
+
+sys.setrecursionlimit(1750)
 
 
 def strcopy(buf):
@@ -41,6 +45,15 @@ def test_xml():
     assert_equal(t, e)
 
 
+def test_xml_cv():
+    s = open('./samples/cv.xml', 'rb')
+    # print(strcopy(s))
+    # return xml(root(s))
+    t = len(xml(root(s)).children)
+    e = None
+    assert_not_equal(t, e)
+
+
 def test_pp():
     '''
     pp(Root([Tag('foo',[],[Inst('doctype'),
@@ -58,13 +71,10 @@ def test_pp():
     pass
 
 
-@raises(MalformedXML)
+@raises(AssertionError, MalformedXML)
 def test_malformed():
     s = io.BytesIO(b'<foo><bar>xxx</foo></bar>')
     try:
         t = xml(root(s))
-        t
     except MalformedXML:
         pass
-    finally:
-        assert_equal(1, 1)

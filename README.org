@@ -12,7 +12,7 @@
 ** large test, OpenDocument sample (34KB)
    cv.xml
 
-** TODO Bug: cv.xml uncovers an infinite loop in saxg
+** DONE Bug: cv.xml uncovers an infinite loop in saxg
 
 *** Trace. Warning, 98 lines
 
@@ -113,6 +113,11 @@
   in text in root in etag in root in otag in root in text in root in etag in root 
   in otag in root in text in root in etag in root in otag in root in otag in root 
   in peek
+
+*** Fix: sys.setrecursionlimit(2000)
+    cv.xml prints.
+
+    Need to rewrite as a single while True: generator ?
 
 * XML parser
 
