@@ -25,7 +25,15 @@
 ** DONE Bug: cycle in tree construction
    see commit e655648
 
-** TODO Bug: non supported xml objects impedes reduction
+** DONE Bug: non supported xml objects impedes reduction
 
    <!-- .... --> is seen as a tag, thus absorbs subsequent nodes,
    confusing the recursive logic.
+
+   Better hypothesis: self-closing tags appending linearly since no
+   etag to reduce.
+
+   Solution: tokenizer could issue both ('otag', ...) then ('etag', ...)
+   on the fly. *Tokenizing sugar*...
+
+   Bug fixed (80% confidence)
