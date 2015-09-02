@@ -16,7 +16,7 @@ def peek(stream, forward=1, span=0):
     >>> peek(bs, forward=2, span=2)
     b'BcD' # BUG
     '''
-    print('[TODO] fix bug in peek, see docstring.')
+    # print('[TODO] fix bug in peek, see docstring.')
     p = stream.tell()
     c = stream.read(forward+span)[span-1:] # python can be weird...
     stream.seek(p)

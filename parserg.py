@@ -1,5 +1,4 @@
 from collections import namedtuple
-import io
 
 # Definitions
 
@@ -39,6 +38,7 @@ def fst(s):
 
 def top(s):
     return s[-1]
+
 
 # Pretty Printer
 

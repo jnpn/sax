@@ -1,9 +1,9 @@
 import io
 
-from nose.tools import assert_equal
+from nose.tools import assert_equal, raises
 
 from saxg import root
-from parserg import *
+from parserg import Root, Comment, Doctype, Text, Inst, Tag, MalformedXML, xml
 
 
 def strcopy(buf):
@@ -11,7 +11,6 @@ def strcopy(buf):
     s = buf.read()
     buf.seek(0)
     return s
-
 
 
 def test_0():
@@ -44,7 +43,9 @@ def test_xml():
 
 def test_pp():
     '''
-    pp(Root([Tag('foo',[],[Inst('doctype'), Text('wat'), Tag('bar', [], [Text('duh')])])]))
+    pp(Root([Tag('foo',[],[Inst('doctype'),
+                           Text('wat'),
+                           Tag('bar', [], [Text('duh')])])]))
     ->
     Root
     foo
