@@ -1,9 +1,9 @@
 
 * Tokenizer
 
-** add comment support
+** DONE add comment support
 
-** add doctype support
+** DONE add doctype support
 
 ** factor saxg code
 
@@ -11,15 +11,25 @@
 
 ** monadic parser ?
 
+** objectional parser ?
+   - no more explicit stateful stack recursion
+   - A Root object walk the stream. On certain conditions, it
+     will pass parsing to a new subclass (passing himself in need of
+     recursion, REDUCE, SELF INSERT)
+
+     Root.parse -> {...}, (Text | Inst | ...).parse -> ...
+
 * XML parser
 
-** Stream of inst | otag | etag | text -> Tree
+** DONE Stream of inst | otag | etag | text | ... -> Tree
 
    stack shift reduce
 
-   inst -> push (Inst.)
+   inst -> top.append it
    otag -> push (Tag. ...)
    text -> top.append it
+   comm -> top.append it
+   doct -> top.append it
    etag -> t = pop; top.append it
 
 ** DONE Bug: cycle in tree construction
