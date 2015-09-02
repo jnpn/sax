@@ -73,31 +73,3 @@ def fst(s):
 
 def top(s):
     return s[-1]
-
-
-def strcopy(buf):
-    s = buf.read()
-    buf.seek(0)
-    return s
-
-
-# tests
-
-def test_xml():
-    s = open('./samples/dbus.xml', 'rb')
-    print(strcopy(s))
-    return xml(root(s))
-
-
-def test_0():
-    s = io.BytesIO(b'<foo>x</foo>')
-    print(strcopy(s))
-    t = xml(root(s))
-    return t
-
-def test_1():
-    '''bug'''
-    s = io.BytesIO(b'<foo><bar>duh</bar></foo>')
-    print(strcopy(s))
-    t = xml(root(s))
-    return t
