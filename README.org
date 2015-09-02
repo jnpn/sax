@@ -114,7 +114,8 @@
   in otag in root in text in root in etag in root in otag in root in otag in root 
   in peek
 
-*** Fix: sys.setrecursionlimit(2000)
+*** Fix: sys.setrecursionlimit(1800)
+    (previously set to 2000, but 1800 is fine here)
     cv.xml prints.
 
     Need to rewrite as a single while True: generator ?
