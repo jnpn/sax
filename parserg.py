@@ -17,7 +17,7 @@ def xml(token_stream):
         elif k == 'text':
             stack[-1].children.append(Text(t))
         elif k == 'etag':
-            t = stack[-1];
+            t = stack[-1]; # cycle
             stack[-1].children.append(t)
     print(stack)
     return stack[0]
@@ -53,3 +53,13 @@ Text duh
 
 def test_xml():
     return xml(root(open('./samples/dbus.xml', 'rb')))
+
+
+def test_0():
+    t = xml(root(io.BytesIO(b'<foo>x</foo>')))
+    return t
+
+def test_1():
+    '''bug'''
+    t = xml(root(io.BytesIO(b'<foo><bar>duh</bar></foo>')))
+    return t
