@@ -1,8 +1,7 @@
 from collections import namedtuple
 import io
 
-from saxg import root
-
+# Definitions
 
 Root = namedtuple('Root', 'children')
 Inst = namedtuple('Inst', 'inst')
@@ -10,7 +9,8 @@ Text = namedtuple('Text', 'text')
 Comment = namedtuple('Comment', 'comment')
 Doctype = namedtuple('Doctype', 'doctype')
 Tag = namedtuple('Tag', 'name attrs children')
-# Tag('foo', [], [Text('wat'), Text('duh')])
+
+# Parser
 
 def xml(token_stream):
     stack = []
@@ -33,6 +33,15 @@ def xml(token_stream):
     return fst(stack)
 
 
+def fst(s):
+    return s[0]
+
+
+def top(s):
+    return s[-1]
+
+# Pretty Printer
+
 def pp(xml):
     k = xml.__class__.__name__
     if k == 'Root':
@@ -53,23 +62,3 @@ def pp(xml):
         print('Inst', k, xml.inst.decode('utf8').strip())
     else:
         print('[unknown]', xml)
-
-'''
-pp(Root([Tag('foo',[],[Inst('doctype'), Text('wat'), Tag('bar', [], [Text('duh')])])]))
-->
-Root
-foo
-Inst doctype
-Text wat
-bar
-Text duh
-# OK
-'''
-
-
-def fst(s):
-    return s[0]
-
-
-def top(s):
-    return s[-1]
