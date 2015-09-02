@@ -3,11 +3,14 @@ from collections import namedtuple
 Root = namedtuple('Root', 'children')
 Inst = namedtuple('Inst', 'inst')
 Text = namedtuple('Text', 'text')
+Comment = namedtuple('Comment', 'comment')
+Doctype = namedtuple('Doctype', 'doctype')
 Tag = namedtuple('Tag', 'name attrs children')
 # Tag('foo', [], [Text('wat'), Text('duh')])
 
 def xml(token_stream):
     stack = []
+
     stack.append(Root([]))
     for k, t in token_stream:
         if k == 'inst':
@@ -16,9 +19,15 @@ def xml(token_stream):
             stack.append(Tag(t, [], []))
         elif k == 'text':
             stack[-1].children.append(Text(t))
+        elif k == 'comment':
+            stack[-1].children.append(Comment(t))
+        elif k == 'doctype':
+            stack[-1].children.append(Doctype(t))
         elif k == 'etag':
+            print('[end][pre]', (stack[-3:]))
             sub = stack.pop();
             stack[-1].children.append(sub)
+            print('[end][post]', stack[-3:])
     print(stack)
     return stack[0]
 

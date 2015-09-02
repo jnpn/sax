@@ -22,12 +22,22 @@ def peek(stream, forward=1, span=0):
     stream.seek(p)
     return c
 
+class UnknownElement(Exception): pass
+
 def root(s):
     c1 = peek(s)
     if c1 == b'<':
         c2 = peek(s, 2)
         if c2 == b'?':
             yield from inst(s)
+        elif c2 == b'!':
+            c3 = peek(s, 3)
+            if c3 == b'-':
+                yield from comment(s)
+            elif c3 == b'D':
+                yield from doctype(s)
+            else:
+                raise UknownElement(s)
         elif c2 == b'/':
             yield from etag(s)
         else:
@@ -37,6 +47,27 @@ def root(s):
     else:
         yield from text(s)
         s.seek(s.tell() - 1)
+
+
+def comment(s):
+    c = s.read(1)
+    a = b''
+    while c != b'>' and c != b'':
+        a += c
+        c = s.read(1)
+    yield ('comment', a + b'>') if c != b'' else ('error', a)
+    yield from root(s)
+
+
+def doctype(s):
+    c = s.read(1)
+    a = b''
+    while c != b'>' and c != b'':
+        a += c
+        c = s.read(1)
+    yield ('doctype', a + b'>') if c != b'' else ('error', a)
+    yield from root(s)
+
 
 def otag(s):
     '''

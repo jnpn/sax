@@ -21,3 +21,11 @@
    otag -> push (Tag. ...)
    text -> top.append it
    etag -> t = pop; top.append it
+
+** DONE Bug: cycle in tree construction
+   see commit e655648
+
+** TODO Bug: non supported xml objects impedes reduction
+
+   <!-- .... --> is seen as a tag, thus absorbs subsequent nodes,
+   confusing the recursive logic.
