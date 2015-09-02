@@ -32,14 +32,18 @@ def xml(token_stream):
         elif k == 'doctype':
             top(stack).children.append(Doctype(t))  # SELF INSERT
         elif k == 'etag':
-            sub = stack.pop()                       # REDUCE
-            tns = tagname(sub.name)
-            tnt = tagname(t)
-            assert tns == tnt, "Wrong open/close tags: %s | %s" % (tns, tnt)
-            if tns != tnt:
-                raise MalformedXML(top(stack), sub)
-            top(stack).children.append(sub)
+            sub = stack.pop()
+            tagcheck(sub.name, t)                   # CHECK
+            top(stack).children.append(sub)         # REDUCE
     return fst(stack)
+
+
+def tagcheck(opentag, closetag):
+    otn = tagname(opentag)
+    ctn = tagname(closetag)
+    assert otn == ctn, "Wrong open/close tags: <%s> | </%s>" % (otn, ctn)
+    if otn != ctn:
+        raise MalformedXML(opentag, closetag)
 
 
 def tagname(tag):
