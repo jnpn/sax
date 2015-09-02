@@ -17,8 +17,8 @@ def xml(token_stream):
         elif k == 'text':
             stack[-1].children.append(Text(t))
         elif k == 'etag':
-            t = stack[-1]; # cycle
-            stack[-1].children.append(t)
+            sub = stack.pop();
+            stack[-1].children.append(sub)
     print(stack)
     return stack[0]
 
