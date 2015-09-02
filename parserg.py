@@ -22,5 +22,34 @@ def xml(token_stream):
     print(stack)
     return stack[0]
 
+def pp(xml):
+    k = xml.__class__.__name__
+    if k == 'Root':
+        print('Root')
+        for c in xml.children:
+            pp(c)
+    elif k == 'Text':
+        print('Text', xml.text)
+    elif k == 'Tag':
+        print(xml.name)
+        for c in xml.children:
+            pp(c)
+    elif k == 'Inst':
+        print('Inst', xml.inst)
+    else:
+        print('[unknown]', xml)
+
+'''
+pp(Root([Tag('foo',[],[Inst('doctype'), Text('wat'), Tag('bar', [], [Text('duh')])])]))
+->
+Root
+foo
+Inst doctype
+Text wat
+bar
+Text duh
+# OK
+'''
+
 def test_xml():
     return xml(root(open('./samples/dbus.xml', 'rb')))
