@@ -13,7 +13,7 @@ def xml(token_stream):
         if k == 'inst':
             stack[-1].children.append(Inst(t))
         elif k == 'otag':
-            stack[-1].children.append(Tag(t, [], []))
+            stack.append(Tag(t, [], []))
         elif k == 'text':
             stack[-1].children.append(Text(t))
         elif k == 'etag':
