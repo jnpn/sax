@@ -33,6 +33,8 @@ def xml(token_stream):
             top(stack).children.append(Comment(t))  # SELF INSERT
         elif k == 'doctype':
             top(stack).children.append(Doctype(t))  # SELF INSERT
+        elif k == 'selfclosing':
+            top(stack).children.append(Tag(t, [], []))  # SELF INSERT
         elif k == 'closing':
             sub = stack.pop()
             tagcheck(sub.name, t)                   # CHECK
