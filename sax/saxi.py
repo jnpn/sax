@@ -39,16 +39,20 @@ def tok(stream):
             # TAG work here
             acc = ''
             tac = stream.read(1)
-            while tac != '>':
+            while tac != '>' and tac != '':
                 acc += tac
                 tac = stream.read(1)
 
-            # hold on, self closing ?
-            if acc[-1] == '/':
-                k = 'selfclosing'                # SELFCLOSING
+            if tac == '':                        # PREMATURE EOF
+                k = 'error'
+                yield k, acc
+            else:
+                # hold on, self closing ?
+                if acc[-1] == '/':
+                    k = 'selfclosing'            # SELFCLOSING
 
-            acc += '>'
-            yield k, acc
+                acc += '>'
+                yield k, acc
 
         else:                                    # TEXT
             k = 'text'
