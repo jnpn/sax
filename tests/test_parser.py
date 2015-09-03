@@ -3,8 +3,8 @@ import io
 
 from nose.tools import assert_equal, raises, assert_not_equal
 
-from saxg import root
-from parserg import Root, Comment, Doctype, Text, Inst, Tag, MalformedXML, xml
+from sax.saxg import root
+from sax.parserg import Root, Comment, Doctype, Text, Inst, Tag, MalformedXML, xml
 
 
 sys.setrecursionlimit(1750)

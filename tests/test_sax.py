@@ -1,6 +1,6 @@
 from nose.tools import assert_equal
 import io
-from saxg import root, peek
+from sax.saxg import root, peek
 
 # peek
 
