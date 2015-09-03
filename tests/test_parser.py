@@ -3,7 +3,7 @@ import io
 
 from nose.tools import assert_equal, raises, assert_not_equal
 
-from sax.tokenizer.gen import tok
+from sax.tokenizer.loop import tok
 from sax.parser.gen import Root, Comment, Doctype, Text, Instruction, \
     Tag, MalformedXML, xml
 

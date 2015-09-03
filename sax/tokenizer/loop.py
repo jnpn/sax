@@ -4,6 +4,8 @@ Classic imperative attempt
 
 from sax.tokenizer.exceptions import UnknownElement
 from sax.prelude import peek
+from sax.tokenizer.interface import comment, doctype, opening, \
+    closing, selfclosing, instruction, text
 
 
 def tok(stream):
@@ -20,7 +22,7 @@ def tok(stream):
             elif cc == '!':
                 ccc = peek(stream, off=3)
                 if ccc == '-':
-                    k = 'comment'                # COMMENT TAG
+                    k = comment                # COMMENT TAG
                 elif ccc == 'D':
                     k = 'doctype'                # DOCTYPE TAG
                 else:

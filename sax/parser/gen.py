@@ -1,5 +1,7 @@
 from collections import namedtuple
 
+from sax.tokenizer.interface import comment
+
 # Definitions
 
 Root = namedtuple('Root', 'children')
@@ -27,7 +29,7 @@ def xml(token_stream):
             stack.append(Tag(t, [], []))            # SHIFT
         elif k == 'text':
             top(stack).children.append(Text(t))     # SELF INSERT
-        elif k == 'comment':
+        elif k == comment:
             top(stack).children.append(Comment(t))  # SELF INSERT
         elif k == 'doctype':
             top(stack).children.append(Doctype(t))  # SELF INSERT
