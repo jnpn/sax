@@ -14,18 +14,6 @@ def peek(stream, off=1):
     return c
 
 
-def testpeek0():
-    c = peek(io.StringIO('<foo>'), off=2)
-    e = 'f'
-    return c == e
-
-
-def testpeek1():
-    c = peek(io.StringIO('<foo>'), off=3)
-    e = 'o'
-    return c == e
-
-
 def tok(stream):
 
     while peek(stream) != '':
