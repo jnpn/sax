@@ -3,6 +3,8 @@ Generator based XML tokenizer (SAX like)
 '''
 
 from sax.tokenizer.exceptions import UnknownElement
+from sax.tokenizer.interface import comment, doctype, opening, \
+    closing, selfclosing, instruction, text
 
 
 def peek(stream, forward=1, span=0):

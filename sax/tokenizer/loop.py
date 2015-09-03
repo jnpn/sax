@@ -2,9 +2,7 @@
 Classic imperative attempt
 '''
 
-
-class UknownToken(Exception):
-    pass
+from sax.tokenizer.exceptions import UnknownToken
 
 
 def peek(stream, off=1):
@@ -32,7 +30,7 @@ def tok(stream):
                 elif ccc == 'D':
                     k = 'doctype'                # DOCTYPE TAG
                 else:
-                    raise UknownToken(c+cc+ccc)
+                    raise UnknownToken(c+cc+ccc)
             else:
                 k = 'opening'                    # OPEN TAG
 
