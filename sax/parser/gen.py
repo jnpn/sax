@@ -68,7 +68,7 @@ def pp(xml, inds=0, indc='  '):
 
     def clean(s):
         import re
-        s = s.decode('utf8').strip()
+        s = s.strip()
         return re.sub(r'[\t\r\n ]+', ' ', s)
 
     def pic(k, t, post=lambda k, v: k + ' ' + v):
