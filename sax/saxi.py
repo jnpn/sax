@@ -86,6 +86,8 @@ def tok(stream):
                 # only if not at the end.
             yield k, acc
 
+        c = peek(stream)
+
 
 def test():
     import io
