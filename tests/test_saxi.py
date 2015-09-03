@@ -2,7 +2,7 @@ from nose.tools import assert_equal
 
 import io
 
-from saxi import peek, tok
+from sax.saxi import peek, tok
 
 
 def testpeek0():
