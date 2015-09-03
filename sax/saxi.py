@@ -18,9 +18,21 @@ def log(f):
 @log
 def peek(stream, off=1):
     p = stream.tell()
-    c = stream.read(off)[-off-1:]
+    c = stream.read(off)[-1:]
     stream.seek(p)
     return c
+
+
+def testpeek0():
+    c = peek(io.StringIO('<foo>'), off=2)
+    e = 'f'
+    return c == e
+
+
+def testpeek1():
+    c = peek(io.StringIO('<foo>'), off=3)
+    e = 'o'
+    return c == e
 
 
 def tok(stream):
