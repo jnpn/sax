@@ -26,17 +26,17 @@ def tok(stream):
 
     while peek(stream) != '':
         if like(stream, '<?'):
-            yield from tag(stream, 'instruction')  # INSTRUCTION TAG
+            yield tag(stream, 'instruction')  # INSTRUCTION TAG
         elif like(stream, '</'):
-            yield from tag(stream, 'closing')      # CLOSING TAG
+            yield tag(stream, 'closing')      # CLOSING TAG
         elif like(stream, '<!--'):
-            yield from tag(stream, 'comment')      # COMMENT TAG
+            yield tag(stream, 'comment')      # COMMENT TAG
         elif like(stream, '<!'):
-            yield from tag(stream, 'doctype')      # DOCTYPE TAG
+            yield tag(stream, 'doctype')      # DOCTYPE TAG
         elif like(stream, '<'):
-            yield from tag(stream, 'opening')      # OPEN TAG
+            yield tag(stream, 'opening')      # OPEN TAG
         else:
-            yield from text(stream, 'text')        # TEXT
+            yield text(stream, 'text')        # TEXT
 
 
 def text(stream, kind):
@@ -49,7 +49,7 @@ def text(stream, kind):
     if peek(stream) != '':
         stream.seek(stream.tell() - 1)  # must rewind before '<'
         # only if not at the end.
-    yield kind, acc
+    return kind, acc
 
 
 def tag(stream, kind):
@@ -60,10 +60,10 @@ def tag(stream, kind):
         tac = stream.read(1)
 
     if tac == '':                        # PREMATURE EOF
-        yield 'error', acc
+        return 'error', acc
     else:
         # hold on, self closing ?
         if acc[-1] == '/':
-            yield 'selfclosing', acc + '>'            # SELFCLOSING
+            return 'selfclosing', acc + '>'            # SELFCLOSING
         else:
-            yield kind, acc + '>'
+            return kind, acc + '>'
