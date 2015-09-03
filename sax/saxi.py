@@ -64,6 +64,3 @@ def tok(stream):
             yield k, acc
 
         c = peek(stream)
-def sax_otag(stream): pass
-def sax_ctag(stream): pass
-def sax_text(stream): pass
