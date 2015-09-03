@@ -1,128 +1,128 @@
 from nose.tools import assert_equal
 import io
-from sax.saxg import root, peek
+from sax.saxg import tok, peek
 
 # peek
 
 def test_peek():
-    bnil = b''
-    bsnil = io.BytesIO(bnil)
+    bnil = ''
+    bsnil = io.StringIO(bnil)
     assert_equal(bnil, peek(bsnil))
 
 # parsers
 
 def test_text():
-    bs = b'yolo'
-    t = list(root(io.BytesIO(bs)))
-    e = [('text', b'yolo')]
+    bs = 'yolo'
+    t = list(tok(io.StringIO(bs)))
+    e = [('text', 'yolo')]
     # return bs, t, e, t == e
     assert_equal(t, e)
 
 
-def test_text_otag():
-    bs = b'text<foo>'
-    t = list(root(io.BytesIO(bs)))
-    e = [('test', b'text'),
-         ('otag', b'<foo>')]
+def test_text_opening():
+    bs = 'text<foo>'
+    t = list(tok(io.StringIO(bs)))
+    e = [('test', 'text'),
+         ('opening', '<foo>')]
 
 
-def test_otag():
-    bs = b'<foo>'
-    i = list(root(io.BytesIO(bs)))
-    e = [('otag', b'<foo>')]
+def test_opening():
+    bs = '<foo>'
+    i = list(tok(io.StringIO(bs)))
+    e = [('opening', '<foo>')]
     # return bs, i, e, i == e
     assert_equal(i, e)
 
 
-def test_otag_etag():
-    bs = b'<foo></foo>'
-    i = list(root(io.BytesIO(bs)))
-    e = [('otag', b'<foo>'),
-         ('etag', b'</foo>')]
+def test_opening_closing():
+    bs = '<foo></foo>'
+    i = list(tok(io.StringIO(bs)))
+    e = [('opening', '<foo>'),
+         ('closing', '</foo>')]
     # return bs, i, e, i == e
     assert_equal(i, e)
 
 
-def test_otag_otag():
-    bs = b'<foo><bar>'
-    i = list(root(io.BytesIO(bs)))
-    e = [('otag', b'<foo>'),
-         ('otag', b'<bar>')]
+def test_opening_opening():
+    bs = '<foo><bar>'
+    i = list(tok(io.StringIO(bs)))
+    e = [('opening', '<foo>'),
+         ('opening', '<bar>')]
     # return bs, i, e, i == e
     assert_equal(i, e)
 
 
-def test_otag_attrs():
-    bs = b'<foo a="a" b="b">'
-    i = list(root(io.BytesIO(bs)))
-    e = [('otag', b'<foo a="a" b="b">')]
+def test_opening_attrs():
+    bs = '<foo a="a" b="b">'
+    i = list(tok(io.StringIO(bs)))
+    e = [('opening', '<foo a="a" b="b">')]
     # return bs, i, e, i == e
     assert_equal(i, e)
 
 
-def test_etag():
-    bs = b'</foo>'
-    i = list(root(io.BytesIO(bs)))
-    e = [('etag', b'</foo>')]
+def test_closing():
+    bs = '</foo>'
+    i = list(tok(io.StringIO(bs)))
+    e = [('closing', '</foo>')]
     # return bs, i, e, i == e
     assert_equal(i, e)
 
 
-def test_inst_too_short():
-    bs = b'<?xml version="1.0" encoding="UTF-8"?'
-    i = list(root(io.BytesIO(bs)))
-    e = [('error', b'<?xml version="1.0" encoding="UTF-8"?')]
+def test_instruction_too_short():
+    bs = '<?xml version="1.0" encoding="UTF-8"?'
+    i = list(tok(io.StringIO(bs)))
+    e = [('error', '<?xml version="1.0" encoding="UTF-8"?')]
     # return bs, i, e, i == e
     assert_equal(i, e)
 
 
-def test_inst():
-    bs = b'<?xml version="1.0" encoding="UTF-8"?>'
-    i = list(root(io.BytesIO(bs)))
-    e = [('inst', b'<?xml version="1.0" encoding="UTF-8"?>')]
+def test_instruction():
+    bs = '<?xml version="1.0" encoding="UTF-8"?>'
+    i = list(tok(io.StringIO(bs)))
+    e = [('instruction', '<?xml version="1.0" encoding="UTF-8"?>')]
     # return bs, i, e, i == e
     assert_equal(i, e)
 
 
-def test_inst_2():
-    bs = b'<?xml version="1.0" encoding="UTF-8"?><?inst?>'
-    i = list(root(io.BytesIO(bs)))
-    e = [('inst', b'<?xml version="1.0" encoding="UTF-8"?>'),
-         ('inst', b'<?inst?>')]
+def test_instruction_2():
+    bs = '<?xml version="1.0" encoding="UTF-8"?><?instruction?>'
+    i = list(tok(io.StringIO(bs)))
+    e = [('instruction', '<?xml version="1.0" encoding="UTF-8"?>'),
+         ('instruction', '<?instruction?>')]
     # return bs, i, e, i == e
     assert_equal(i, e)
 
 
-def test_inst_text():
-    bs = b'<?xml version="1.0" encoding="UTF-8"?>text'
-    i = list(root(io.BytesIO(bs)))
-    e = [('inst', b'<?xml version="1.0" encoding="UTF-8"?>'),
-         ('text', b'text')]
+def test_instruction_text():
+    bs = '<?xml version="1.0" encoding="UTF-8"?>text'
+    i = list(tok(io.StringIO(bs)))
+    e = [('instruction', '<?xml version="1.0" encoding="UTF-8"?>'),
+         ('text', 'text')]
     # return bs, i, e, i == e
     assert_equal(i, e)
 
 
-def test_text_otag_text_etag():
-    bs = b'eww<foo>bar</foo>'
-    i = list(root(io.BytesIO(bs)))
-    e = [('text', b'eww'),
-         ('otag', b'<foo>'),
-         ('text', b'bar'),
-         ('etag', b'</foo>')]
+def test_text_opening_text_closing():
+    bs = 'eww<foo>bar</foo>'
+    i = list(tok(io.StringIO(bs)))
+    e = [('text', 'eww'),
+         ('opening', '<foo>'),
+         ('text', 'bar'),
+         ('closing', '</foo>')]
 
 
-def test_otag_text_etag():
-    bs = b'<foo>bar</foo>'
-    i = list(root(io.BytesIO(bs)))
-    e = [('otag', b'<foo>'),
-         ('text', b'bar'),
-         ('etag', b'</foo>')]
+def test_opening_text_closing():
+    bs = '<foo>bar</foo>'
+    i = list(tok(io.StringIO(bs)))
+    e = [('opening', '<foo>'),
+         ('text', 'bar'),
+         ('closing', '</foo>')]
 
-def test_inst_text_inst():
-    bs = b'<?xml version="1.0" encoding="UTF-8"?>text<?inst?>'
-    i = list(root(io.BytesIO(bs)))
-    e = [('inst', b'<?xml version="1.0" encoding="UTF-8"?>'),
-         ('text', b'text'),
-         ('inst', b'<?inst?>')]
+def test_instruction_text_instruction():
+    bs = '<?xml version="1.0" encoding="UTF-8"?>text<?instruction?>'
+    i = list(tok(io.StringIO(bs)))
+    e = [('instruction', '<?xml version="1.0" encoding="UTF-8"?>'),
+         ('text', 'text'),
+         ('instruction', '<?instruction?>')]
     # return bs, i, e, i == e
     assert_equal(i, e)
