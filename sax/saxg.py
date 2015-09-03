@@ -2,6 +2,7 @@
 Generator based XML tokenizer (SAX like)
 '''
 
+from sax.tokenizer.exceptions import UnknownElement
 
 
 def peek(stream, forward=1, span=0):
@@ -20,7 +21,6 @@ def peek(stream, forward=1, span=0):
     stream.seek(p)
     return c
 
-class UnknownElement(Exception): pass
 
 def tok(s):
     c1 = peek(s)
