@@ -3,7 +3,7 @@ from collections import namedtuple
 # Definitions
 
 Root = namedtuple('Root', 'children')
-Inst = namedtuple('Inst', 'inst')
+Instruction = namedtuple('Instruction', 'instruction')
 Text = namedtuple('Text', 'text')
 Comment = namedtuple('Comment', 'comment')
 Doctype = namedtuple('Doctype', 'doctype')
@@ -21,9 +21,9 @@ def xml(token_stream):
     stack = [Root([])]
 
     for k, t in token_stream:
-        if k == 'inst':
-            top(stack).children.append(Inst(t))
-        elif k == 'otag':
+        if k == 'instruction':
+            top(stack).children.append(Instruction(t))
+        elif k == 'opening':
             stack.append(Tag(t, [], []))            # SHIFT
         elif k == 'text':
             top(stack).children.append(Text(t))     # SELF INSERT
@@ -31,7 +31,7 @@ def xml(token_stream):
             top(stack).children.append(Comment(t))  # SELF INSERT
         elif k == 'doctype':
             top(stack).children.append(Doctype(t))  # SELF INSERT
-        elif k == 'etag':
+        elif k == 'closing':
             sub = stack.pop()
             tagcheck(sub.name, t)                   # CHECK
             top(stack).children.append(sub)         # REDUCE
@@ -48,7 +48,7 @@ def tagcheck(opentag, closetag):
 
 def tagname(tag):
     import re
-    rx = b'</?(?P<tag>[^ >]+).*>'
+    rx = '</?(?P<tag>[^ >]+).*>'
     return re.match(rx, tag).groupdict()['tag']
 
 
@@ -92,8 +92,8 @@ def pp(xml, inds=0, indc='  '):
         for c in xml.children:
             pp(c, inds + 1)
         pic(k, xml.name, post=lambda k, v: ' /')
-    elif k == 'Inst':
-        pic(k, xml.inst)
+    elif k == 'Instruction':
+        pic(k, xml.instruction)
     else:
         pic('[unknown]', xml)
 
@@ -104,7 +104,7 @@ def xmldepth(xml):
         return n == 'Root' or n == 'Tag'
 
     def isleaf(n):
-        return n == 'Inst' or n == 'Text' or n == 'Doctype' or n == 'Comment'
+        return n == 'Instruction' or n == 'Text' or n == 'Doctype' or n == 'Comment'
 
     k = xml.__class__.__name__
 

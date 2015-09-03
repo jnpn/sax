@@ -3,8 +3,9 @@ import io
 
 from nose.tools import assert_equal, raises, assert_not_equal
 
-from sax.saxg import root
-from sax.parserg import Root, Comment, Doctype, Text, Inst, Tag, MalformedXML, xml
+from sax.tokenizer.gen import tok
+from sax.parser.gen import Root, Comment, Doctype, Text, Instruction, \
+    Tag, MalformedXML, xml
 
 
 sys.setrecursionlimit(1750)
@@ -18,51 +19,43 @@ def strcopy(buf):
 
 
 def test_0():
-    s = io.BytesIO(b'<foo>x</foo>')
-    # print(strcopy(s))
-    t = xml(root(s))
-    # return t
-    e = Root([Tag(b'<foo>', [], [Text(b'x')])])
+    s = io.StringIO('<foo>x</foo>')
+    t = xml(tok(s))
+    e = Root([Tag('<foo>', [], [Text('x')])])
     assert_equal(t, e)
 
 
 def test_1():
     '''bug'''
-    s = io.BytesIO(b'<foo><bar>duh</bar></foo>')
-    # print(strcopy(s))
-    t = xml(root(s))
-    # return t
-    e = Root([Tag(b'<foo>', [], [Tag(b'<bar>', [], [Text(b'duh')])])])
+    s = io.StringIO('<foo><bar>duh</bar></foo>')
+    t = xml(tok(s))
+    e = Root([Tag('<foo>', [], [Tag('<bar>', [], [Text('duh')])])])
     assert_equal(t, e)
 
 
 def test_xml():
-    s = open('./samples/dbus.xml', 'rb')
-    # print(strcopy(s))
-    # return xml(root(s))
-    t = xml(root(s))
-    e = Root(children=[Inst(inst=b'<?xml version="1.0"?>'), Text(text=b' '), Comment(comment=b'<!--*-nxml-*-->'), Text(text=b'\n'), Doctype(doctype=b'<!DOCTYPE busconfig PUBLIC "-//freedesktop//DTD D-BUS Bus Configuration 1.0//EN"\n        "http://www.freedesktop.org/standards/dbus/1.0/busconfig.dtd">'), Text(text=b'\n\n'), Comment(comment=b'<!--\n  This file is part of systemd.\n\n  systemd is free software; you can redistribute it and/or modify it\n  under the terms of the GNU Lesser General Public License as published by\n  the Free Software Foundation; either version 2.1 of the License, or\n  (at your option) any later version.\n-->'), Text(text=b'\n\n'), Tag(name=b'<busconfig>', attrs=[], children=[Text(text=b'\n\n        '), Tag(name=b'<policy user="root">', attrs=[], children=[Text(text=b'\n                '), Tag(name=b'<allow own="org.freedesktop.timedate1"/>', attrs=[], children=[]), Text(text=b'\n                '), Tag(name=b'<allow send_destination="org.freedesktop.timedate1"/>', attrs=[], children=[]), Text(text=b'\n                '), Tag(name=b'<allow receive_sender="org.freedesktop.timedate1"/>', attrs=[], children=[]), Text(text=b'\n        ')]), Text(text=b'\n\n        '), Tag(name=b'<policy context="default">', attrs=[], children=[Text(text=b'\n                '), Tag(name=b'<allow send_destination="org.freedesktop.timedate1"/>', attrs=[], children=[]), Text(text=b'\n                '), Tag(name=b'<allow receive_sender="org.freedesktop.timedate1"/>', attrs=[], children=[]), Text(text=b'\n        ')]), Text(text=b'\n\n')]), Text(text=b'\n')])
+    s = open('./samples/dbus.xml')
+    t = xml(tok(s))
+    e = Root(children=[Instruction(instruction='<?xml version="1.0"?>'), Text(text=' '), Comment(comment='<!--*-nxml-*-->'), Text(text='\n'), Doctype(doctype='<!DOCTYPE busconfig PUBLIC "-//freedesktop//DTD D-BUS Bus Configuration 1.0//EN"\n        "http://www.freedesktop.org/standards/dbus/1.0/busconfig.dtd">'), Text(text='\n\n'), Comment(comment='<!--\n  This file is part of systemd.\n\n  systemd is free software; you can redistribute it and/or modify it\n  under the terms of the GNU Lesser General Public License as published by\n  the Free Software Foundation; either version 2.1 of the License, or\n  (at your option) any later version.\n-->'), Text(text='\n\n'), Tag(name='<busconfig>', attrs=[], children=[Text(text='\n\n        '), Tag(name='<policy user="root">', attrs=[], children=[Text(text='\n                '), Tag(name='<allow own="org.freedesktop.timedate1"/>', attrs=[], children=[]), Text(text='\n                '), Tag(name='<allow send_destination="org.freedesktop.timedate1"/>', attrs=[], children=[]), Text(text='\n                '), Tag(name='<allow receive_sender="org.freedesktop.timedate1"/>', attrs=[], children=[]), Text(text='\n        ')]), Text(text='\n\n        '), Tag(name='<policy context="default">', attrs=[], children=[Text(text='\n                '), Tag(name='<allow send_destination="org.freedesktop.timedate1"/>', attrs=[], children=[]), Text(text='\n                '), Tag(name='<allow receive_sender="org.freedesktop.timedate1"/>', attrs=[], children=[]), Text(text='\n        ')]), Text(text='\n\n')]), Text(text='\n')])
     assert_equal(t, e)
 
 
 def test_xml_cv():
-    s = open('./samples/cv.xml', 'rb')
-    # print(strcopy(s))
-    # return xml(root(s))
-    t = len(xml(root(s)).children)
+    s = open('./samples/cv.xml')
+    t = len(xml(tok(s)).children)
     e = None
     assert_not_equal(t, e)
 
 
 def test_pp():
     '''
-    pp(Root([Tag('foo',[],[Inst('doctype'),
+    pp(Root([Tag('foo',[],[Instruction('doctype'),
                            Text('wat'),
                            Tag('bar', [], [Text('duh')])])]))
     ->
     Root
     foo
-    Inst doctype
+    Instruction doctype
     Text wat
     bar
     Text duh
@@ -73,8 +66,8 @@ def test_pp():
 
 @raises(AssertionError, MalformedXML)
 def test_malformed():
-    s = io.BytesIO(b'<foo><bar>xxx</foo></bar>')
+    s = io.StringIO('<foo><bar>xxx</foo></bar>')
     try:
-        t = xml(root(s))
+        t = xml(tok(s))
     except MalformedXML:
         pass
