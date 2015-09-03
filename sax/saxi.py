@@ -2,6 +2,8 @@
 Classic imperative attempt
 '''
 
+from collections import OrderedDict
+
 
 class UknownToken(Exception):
     pass
@@ -25,18 +27,23 @@ def like(stream, string):
 def tok(stream):
 
     while peek(stream) != '':
-        if like(stream, '<?'):
-            yield tag(stream, 'instruction')  # INSTRUCTION TAG
-        elif like(stream, '</'):
-            yield tag(stream, 'closing')      # CLOSING TAG
-        elif like(stream, '<!--'):
-            yield tag(stream, 'comment')      # COMMENT TAG
-        elif like(stream, '<!'):
-            yield tag(stream, 'doctype')      # DOCTYPE TAG
-        elif like(stream, '<'):
-            yield tag(stream, 'opening')      # OPEN TAG
-        else:
-            yield text(stream, 'text')        # TEXT
+        rules = OrderedDict([
+            ('<!--', 'comment'),    # COMMENT TAG
+            ('<!', 'doctype'),      # DOCTYPE TAG
+            ('<?', 'instruction'),  # INSTRUCTION TAG
+            ('</', 'closing'),      # CLOSING TAG
+            ('<', 'opening'),       # OPEN TAG
+            (None, 'text'),         # TEXT TAG
+        ])
+
+        for prefix, kind in rules.items():
+            if prefix:
+                if like(stream, prefix):
+                    yield tag(stream, kind)
+                    break
+            else:
+                if not peek(stream) == '':
+                    yield text(stream, 'text')
 
 
 def text(stream, kind):
