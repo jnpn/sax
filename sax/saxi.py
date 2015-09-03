@@ -7,15 +7,6 @@ class UknownToken(Exception):
     pass
 
 
-def log(f):
-    def _(*p, **k):
-        r = f(*p, **k)
-        print(f.__name__, '->', r)
-        return r
-    return _
-
-
-@log
 def peek(stream, off=1):
     p = stream.tell()
     c = stream.read(off)[-1:]
@@ -36,7 +27,6 @@ def testpeek1():
 
 
 def tok(stream):
-    import pdb; pdb.set_trace()
 
     c = peek(stream)
     while c != '':
@@ -61,7 +51,6 @@ def tok(stream):
             # TAG work here
             acc = ''
             tac = stream.read(1)
-            print(tac, acc)
             while tac != '>':
                 acc += tac
                 tac = stream.read(1)
