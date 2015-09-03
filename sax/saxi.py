@@ -84,7 +84,7 @@ def tok(stream):
             if peek(stream) != '':
                 stream.seek(stream.tell() - 1)  # must rewind before '<'
                 # only if not at the end.
-            yield k, tec
+            yield k, acc
 
 
 def test():
