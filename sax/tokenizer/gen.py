@@ -13,66 +13,67 @@ def tok(s):
     if c1 == '<':
         c2 = peek(s, 2)
         if c2 == '?':
-            yield from instruction(s)
+            yield from instruction_tokenizer(s)
         elif c2 == '!':
             c3 = peek(s, 3)
             if c3 == '-':
-                yield from comment(s)
+                yield from comment_tokenizer(s)
             elif c3 == 'D':
-                yield from doctype(s)
+                yield from doctype_tokenizer(s)
             else:
                 raise UnknownElement(s)
         elif c2 == '/':
-            yield from closing(s)
+            yield from closing_tokenizer(s)
         else:
-            yield from opening(s)
+            yield from opening_tokenizer(s)
     elif c1 == '':
         raise StopIteration  # EOF
     else:
-        yield from text(s)
+        yield from text_tokenizer(s)
         s.seek(s.tell() - 1)
 
 
-def comment(s):
+def comment_tokenizer(s):
     c = s.read(1)
     a = ''
     while c != '>' and c != '':
         a += c
         c = s.read(1)
-    yield ('comment', a + '>') if c != '' else ('error', a)
+    yield (comment, a + '>') if c != '' else ('error', a)
     yield from tok(s)
 
 
-def doctype(s):
+def doctype_tokenizer(s):
     c = s.read(1)
     a = ''
     while c != '>' and c != '':
         a += c
         c = s.read(1)
-    yield ('doctype', a + '>') if c != '' else ('error', a)
+    yield (doctype, a + '>') if c != '' else ('error', a)
     yield from tok(s)
 
 
-def opening(s):
+def opening_tokenizer(s):
     '''
     WARNING inclusive limit '>' marks the end, MUST be added outside the loop
     '''
     c = s.read(1)
     a = ''
-    selfclosing = False
+    is_selfclosing = False
     while c != '>' and c != '':
         a += c
         c = s.read(1)
 
     if c == '>' and a[-1:] == '/':
-        selfclosing = True
+        is_selfclosing = True
 
-    yield ('opening', a + '>') if c != '' else ('error', a)
-    if selfclosing:
-        yield ('closing', a + '>')  # reuse the whole 'text' to allow checks
+    if is_selfclosing:
+        yield (selfclosing, a + '>')  # reuse the whole 'text' to allow checks
+    else:
+        yield (opening, a + '>') if c != '' else ('error', a)
     yield from tok(s)
 
-def closing(s):
+def closing_tokenizer(s):
     '''
     WARNING inclusive limit '>' marks the end, MUST be added outside the loop
     '''
@@ -81,10 +82,10 @@ def closing(s):
     while c != '>' and c != '':
         a += c
         c = s.read(1)
-    yield ('closing', a + '>') if c != '' else ('error', a)
+    yield (closing, a + '>') if c != '' else ('error', a)
     yield from tok(s)
 
-def instruction(s):
+def instruction_tokenizer(s):
     '''
     WARNING inclusive limit '>' marks the end, MUST be added outside the loop
     '''
@@ -93,16 +94,16 @@ def instruction(s):
     while c != '>' and c != '':
         a += c
         c = s.read(1)
-    yield ('instruction', a + '>') if c != '' else ('error', a)
+    yield (instruction, a + '>') if c != '' else ('error', a)
     yield from tok(s)
 
-def text(s):
+def text_tokenizer(s):
     c = s.read(1)
     a = ''
     while c != '<' and c != '':
         a += c
         c = s.read(1)
-    yield ('text', a)  # if c != '' else ('error', a)
+    yield (text, a)  # if c != '' else ('error', a)
     if c != '':
         s.seek(s.tell() - 1)  # Finally... still ugly code
     yield from tok(s)
