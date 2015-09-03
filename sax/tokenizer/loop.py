@@ -3,13 +3,7 @@ Classic imperative attempt
 '''
 
 from sax.tokenizer.exceptions import UnknownToken
-
-
-def peek(stream, off=1):
-    p = stream.tell()
-    c = stream.read(off)[-1:]
-    stream.seek(p)
-    return c
+from sax.prelude import peek
 
 
 def tok(stream):

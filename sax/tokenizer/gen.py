@@ -3,25 +3,9 @@ Generator based XML tokenizer (SAX like)
 '''
 
 from sax.tokenizer.exceptions import UnknownElement
+from sax.prelude import peek
 from sax.tokenizer.interface import comment, doctype, opening, \
     closing, selfclosing, instruction, text
-
-
-def peek(stream, forward=1, span=0):
-    '''
-    >>> bs = io.StringIO('aBcDeF')
-    >>> peek(bs, forward=2)
-    'B'
-    >>> peek(bs, forward=2)
-    'B'
-    >>> peek(bs, forward=2, span=2)
-    'BcD'  # BUG
-    '''
-    # print('[TODO] fix bug in peek, see docstring.')
-    p = stream.tell()
-    c = stream.read(forward+span)[span-1:]  # python can be weird...
-    stream.seek(p)
-    return c
 
 
 def tok(s):
