@@ -2,23 +2,83 @@
 Classic imperative attempt
 '''
 
-def dummy(f):
-    c = f.read()
-    while c != '':
-        yield c
-        c = f.read()
 
-def sax_root(stream):
-    c = stream.read()
-    while c != -1:
-        if c == '<':
-            k = stream.read()
-            if k == '?':
-                return sax_inst(stream)
-            elif k == '/':
-                return sax_ctag(stream)
+class UknownToken(Exception):
+    pass
+
+
+def log(f):
+    def _(*p, **k):
+        r = f(*p, **k)
+        print(f.__name__, '->', r)
+        return r
+    return _
+
+
+@log
+def peek(stream, off=1):
+    p = stream.tell()
+    c = stream.read(off)[-off-1:]
+    stream.seek(p)
+    return c
+
+
+def tok(stream):
+    import pdb; pdb.set_trace()
+
+    c = peek(stream)
+    while c != '':
+        k = None
+        if c == '<':                             # * TAG
+            cc = peek(stream, off=2)
+            if cc == '?':
+                k = 'instruction'                # INSTRUCTION TAG
+            elif cc == '/':
+                k = 'closing'                    # CLOSING TAG
+            elif cc == '!':
+                ccc = peek(stream, off=3)
+                if ccc == '-':
+                    k = 'comment'                # COMMENT TAG
+                elif ccc == 'D':
+                    k = 'doctype'                # DOCTYPE TAG
+                else:
+                    raise UknownToken(c+cc+ccc)
             else:
-                return sax_otag(stream)
+                k = 'opening'                    # OPEN TAG
+
+            # TAG work here
+            acc = ''
+            tac = stream.read(1)
+            print(tac, acc)
+            while tac != '>':
+                acc += tac
+                tac = stream.read(1)
+
+            # hold on, self closing ?
+            if acc[-1] == '/':
+                k = 'selfclosing'                # SELFCLOSING
+
+            acc += '>'
+            yield k, acc
+
+        else:                                    # TEXT
+            k = 'text'
+            acc = ''
+            tec = stream.read(1)
+            while tec != '<' and tec != '':
+                acc += tec
+                tec = stream.read(1)
+
+            if peek(stream) != '':
+                stream.seek(stream.tell() - 1)  # must rewind before '<'
+                # only if not at the end.
+            yield k, tec
+
+
+def test():
+    import io
+    return list(tok(io.StringIO('<foo>')))
+
 
 def sax_inst(stream):
     """
