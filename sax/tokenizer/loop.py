@@ -16,19 +16,19 @@ def tok(stream):
         if c == '<':                             # * TAG
             cc = peek(stream, off=2)
             if cc == '?':
-                k = 'instruction'                # INSTRUCTION TAG
+                k = instruction                  # INSTRUCTION TAG
             elif cc == '/':
-                k = 'closing'                    # CLOSING TAG
+                k = closing                      # CLOSING TAG
             elif cc == '!':
                 ccc = peek(stream, off=3)
                 if ccc == '-':
-                    k = comment                # COMMENT TAG
+                    k = comment                  # COMMENT TAG
                 elif ccc == 'D':
-                    k = 'doctype'                # DOCTYPE TAG
+                    k = doctype                  # DOCTYPE TAG
                 else:
                     raise UnknownElement(c+cc+ccc)
             else:
-                k = 'opening'                    # OPEN TAG
+                k = opening                      # OPEN TAG
 
             # TAG work here
             acc = ''
@@ -43,13 +43,13 @@ def tok(stream):
             else:
                 # hold on, self closing ?
                 if acc[-1] == '/':
-                    k = 'selfclosing'            # SELFCLOSING
+                    k = selfclosing              # SELFCLOSING
 
                 acc += '>'
                 yield k, acc
 
         else:                                    # TEXT
-            k = 'text'
+            k = text
             acc = ''
             tec = stream.read(1)
             while tec != '<' and tec != '':

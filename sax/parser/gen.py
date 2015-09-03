@@ -1,6 +1,7 @@
 from collections import namedtuple
 
-from sax.tokenizer.interface import comment
+from sax.tokenizer.interface import comment, doctype, opening, \
+    closing, selfclosing, instruction, text
 
 # Definitions
 
@@ -23,19 +24,19 @@ def xml(token_stream):
     stack = [Root([])]
 
     for k, t in token_stream:
-        if k == 'instruction':
+        if k == instruction:
             top(stack).children.append(Instruction(t))
-        elif k == 'opening':
+        elif k == opening:
             stack.append(Tag(t, [], []))            # SHIFT
-        elif k == 'text':
+        elif k == text:
             top(stack).children.append(Text(t))     # SELF INSERT
         elif k == comment:
             top(stack).children.append(Comment(t))  # SELF INSERT
-        elif k == 'doctype':
+        elif k == doctype:
             top(stack).children.append(Doctype(t))  # SELF INSERT
-        elif k == 'selfclosing':
+        elif k == selfclosing:
             top(stack).children.append(Tag(t, [], []))  # SELF INSERT
-        elif k == 'closing':
+        elif k == closing:
             sub = stack.pop()
             tagcheck(sub.name, t)                   # CHECK
             top(stack).children.append(sub)         # REDUCE
