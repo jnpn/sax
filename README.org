@@ -133,6 +133,73 @@
 
     Need to rewrite as a single while True: generator ?
 
+** Imperative code : factorization
+
+   text s k =
+     acc = zero
+     t = read
+     while pred(t) and term(t) # or term(peek(s))
+       acc <- t
+       t <- read
+
+   inclusive or exclusive statements
+
+   k, acc
+
+   # - accumulate until pred
+   # - inclusive / exclusive flag
+   #   inclusive -> default = post append
+   #   exclusive -> default = post rewind
+   # - on EOS ?
+   #   return error
+
+   # feels like it.takewhile(lambda c: c != '<', iter(stream))
+   # could work like this
+   text|tag s k inc (acc -> acc') eos (k,v -> ...)=
+     term, acc = take(pred andor term)
+
+     if term then eos(k, a)
+
+     inc(a) or ...
+
+   # nope, try again
+
+   parse-until! stream s, char c, premature(s,a -> ...), bool inclusive =
+     match prem, a = take' (!= c) s
+       true, _ -> premature(s, a)
+       _ -> if incl
+	       a + c
+	      begin
+		rewind(s, len(c))
+		a
+     take' pred stream =
+       acc = ''
+       while not eos stream
+	 if not pred peek(stream)
+	    acc += stream(1)
+       return peek(stream) == '', acc
+
+   # nope, does not typecheck, more again
+   #   parse-until! returns premature : token(kind, acc) | acc
+   #     it does too much, should only care about acc and stream
+   #     parsing caller decides the token
+
+   parse-until! s c incl =
+     match p, a = take (!= c) s
+      true, _ -> p, a
+      false, _ ->
+	  match incl
+	    true -> p, a + c
+	    _    -> p, a
+
+   parse-until! s c incl =
+     p, a = take (!= c) s
+     return p, a + c if incl else p, a
+
+   # Turns out to be problematic
+   # Splitting logic with stream state and inclusive/exclusive
+   # made me add stream.read(1) fix in non local places
+
 * XML parser
 
 ** DONE Stream of inst | otag | etag | text | ... -> Tree
