@@ -16,8 +16,8 @@ def peek(stream, off=1):
 
 def tok(stream):
 
-    c = peek(stream)
-    while c != '':
+    while peek(stream) != '':
+        c = peek(stream)
         k = None
         if c == '<':                             # * TAG
             cc = peek(stream, off=2)
@@ -66,5 +66,3 @@ def tok(stream):
                 stream.seek(stream.tell() - 1)  # must rewind before '<'
                 # only if not at the end.
             yield k, acc
-
-        c = peek(stream)
