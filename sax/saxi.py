@@ -14,18 +14,6 @@ def peek(stream, off=1):
     return c
 
 
-def testpeek0():
-    c = peek(io.StringIO('<foo>'), off=2)
-    e = 'f'
-    return c == e
-
-
-def testpeek1():
-    c = peek(io.StringIO('<foo>'), off=3)
-    e = 'o'
-    return c == e
-
-
 def tok(stream):
 
     c = peek(stream)
@@ -76,27 +64,6 @@ def tok(stream):
             yield k, acc
 
         c = peek(stream)
-
-
-def test():
-    import io
-    return list(tok(io.StringIO('<foo>')))
-
-
-def sax_inst(stream):
-    """
-    Docstrings are
-    weird.
-    """
-    c = stream.read(1)
-    inst = c
-    while c != '?':
-        inst += c
-        c = stream.read(1)
-    q = stream.read(1)
-    b = stream.read(1)
-    return inst + q + b
-
 def sax_otag(stream): pass
 def sax_ctag(stream): pass
 def sax_text(stream): pass
