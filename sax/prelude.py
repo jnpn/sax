@@ -30,6 +30,6 @@ def peek(stream, off=1, span=0):
     '''
     # print('[TODO] fix bug in peek, see docstring.')
     p = stream.tell()
-    c = stream.read(off+span)[span-1:]  # python can be weird...
+    c = stream.read(off + span)[span - 1:]  # python can be weird...
     stream.seek(p)
     return c

@@ -14,4 +14,14 @@ class instruction(token): pass
 class text(token): pass
 
 def peek(stream, forward): raise NotImplementedError
+
+
 def tok(stream): raise NotImplementedError
+
+
+def peek(stream, forward):
+    raise NotImplementedError("Interface stub only")
+
+
+def tok(stream):
+    raise NotImplementedError("Interface stub only")

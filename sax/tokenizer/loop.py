@@ -26,7 +26,7 @@ def tok(stream):
                 elif ccc == 'D':
                     k = doctype                  # DOCTYPE TAG
                 else:
-                    raise UnknownElement(c+cc+ccc)
+                    raise UnknownElement(c + cc + ccc)
             else:
                 k = opening                      # OPEN TAG
 

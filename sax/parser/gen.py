@@ -109,7 +109,8 @@ def xmldepth(xml):
         return n == 'Root' or n == 'Tag'
 
     def isleaf(n):
-        return n == 'Instruction' or n == 'Text' or n == 'Doctype' or n == 'Comment'
+        return n == 'Instruction' or n == 'Text' \
+            or n == 'Doctype' or n == 'Comment'
 
     k = xml.__class__.__name__
 

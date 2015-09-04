@@ -106,6 +106,7 @@ def test_opening_text_closing():
          ('text', 'bar'),
          ('closing', '</foo>')]
 
+
 def test_instruction_text_instruction():
     bs = '<?xml version="1.0" encoding="UTF-8"?>text<?instruction?>'
     i = list(tok(io.StringIO(bs)))
@@ -115,6 +116,7 @@ def test_instruction_text_instruction():
     assert_equal(i, e)
 
 # Additional
+
 
 def test_peek0():
     c = peek(io.StringIO('<foo>'), off=2)

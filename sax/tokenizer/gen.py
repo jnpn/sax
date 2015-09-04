@@ -73,6 +73,7 @@ def opening_tokenizer(s):
         yield (opening, a + '>') if c != '' else ('error', a)
     yield from tok(s)
 
+
 def closing_tokenizer(s):
     '''
     WARNING inclusive limit '>' marks the end, MUST be added outside the loop
@@ -85,6 +86,7 @@ def closing_tokenizer(s):
     yield (closing, a + '>') if c != '' else ('error', a)
     yield from tok(s)
 
+
 def instruction_tokenizer(s):
     '''
     WARNING inclusive limit '>' marks the end, MUST be added outside the loop
@@ -96,6 +98,7 @@ def instruction_tokenizer(s):
         c = s.read(1)
     yield (instruction, a + '>') if c != '' else ('error', a)
     yield from tok(s)
+
 
 def text_tokenizer(s):
     c = s.read(1)
