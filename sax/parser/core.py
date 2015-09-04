@@ -65,9 +65,6 @@ def pp(xml, inds=0, indc='  '):
         '''Print Indented and Clean'''
         print(indc * inds, post(k, clean(t)))
 
-    def pre(c):
-        return lambda s: c + s
-
     k = xml.__class__.__name__
     if k == 'Root':
         print(indc * inds, 'Root')

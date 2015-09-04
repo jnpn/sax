@@ -9,13 +9,6 @@ from sax.parser.core import xml
 from sax.parser.exceptions import MalformedXML
 
 
-def strcopy(buf):
-    '''vestigial code'''
-    s = buf.read()
-    buf.seek(0)
-    return s
-
-
 def test_0():
     s = io.StringIO('<foo>x</foo>')
     t = xml(tok(s))
