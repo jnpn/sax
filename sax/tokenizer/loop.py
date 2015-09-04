@@ -5,7 +5,7 @@ Classic imperative attempt
 from sax.tokenizer.exceptions import UnknownElement
 from sax.prelude import peek
 from sax.tokenizer.interface import comment, doctype, opening, \
-    closing, selfclosing, instruction, text
+    closing, selfclosing, instruction, text, error
 
 
 def tok(stream):
@@ -38,7 +38,7 @@ def tok(stream):
                 tac = stream.read(1)
 
             if tac == '':                        # PREMATURE EOF
-                k = 'error'
+                k = error
                 yield k, acc
             else:
                 # hold on, self closing ?
