@@ -17,6 +17,7 @@ setup(
     author='Johan PONIN',
     author_email='johan.ponin.pro@gmail.com',
     license='GPLv2',
+    package_dir={'sax': 'sax'},
     classifiers=[],
     keywords='sax xml parser',
     packages=find_packages(),

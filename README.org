@@ -1,4 +1,35 @@
 
+* TODO General testing idea
+  for each class, each field, write tests for boundaries:
+   - nil value
+   - zero length
+   - absurdely large value
+   - order ?
+   - cycles ?
+
+** TODO Tokenizer test generator
+   for each token class, generate:
+   - repr to concrete:
+     comment s -> "<!--{s}-->"
+     opening t -> "<{t}>"
+
+   - unit test:
+     comment s
+      -> "<!--%s-->" % s
+      -> `s = "<!...>"; e = [(comment, "<!...>")]; t = list(tok(s)); assert...`
+
+   - size 2 combinations:
+   comment -> (comment, text) (comment, opening) (comment, doctype) ...
+   => instantiate concrete strings and tokenized assertions
+   (comment, text)
+   -> assert  tok Concrete (comment, text) == (comment, text)
+
+   - size 3(?):
+     (text, comment, text)
+     (text, comment, inst)
+     ...
+     for stateful order issue
+
 * Tokenizer
 
 ** DONE add comment support
@@ -9,7 +40,7 @@
 
    most sub generators are the same
 
-** large test, OpenDocument sample (34KB)
+** DONE large test, OpenDocument sample (34KB)
    cv.xml
 
 ** DONE Bug: cv.xml uncovers an infinite loop in saxg
