@@ -23,7 +23,7 @@ def tok(stream):
                 ccc = peek(stream, off=3)
                 if ccc == '-':
                     k = comment                  # COMMENT TAG
-                elif ccc == 'D':
+                elif ccc in {'d', 'D'}:
                     k = doctype                  # DOCTYPE TAG
                 else:
                     raise UnknownElement(c + cc + ccc)
