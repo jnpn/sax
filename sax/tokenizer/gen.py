@@ -67,7 +67,7 @@ def opening_tokenizer(s):
         a += c
         c = s.read(1)
 
-    if c == '>' and a[-1:] == '/':
+    if c == '>' and a[-1] == '/':
         is_selfclosing = True
 
     if is_selfclosing:
