@@ -8,32 +8,31 @@ from sax.tokenizer.interface import comment, doctype, opening, \
     closing, selfclosing, instruction, text, error
 
 
-import sys; sys.setrecursionlimit(1800)  # recursion needed for >medium xml
-
-
 def tok(s):
-    c1 = peek(s)
-    if c1 == '<':
-        c2 = peek(s, 2)
-        if c2 == '?':
-            yield from instruction_tokenizer(s)
-        elif c2 == '!':
-            c3 = peek(s, 3)
-            if c3 == '-':
-                yield from comment_tokenizer(s)
-            elif c3 in {'d', 'D'}:
-                yield from doctype_tokenizer(s)
+    p = s.tell()
+    while peek(s) != '':
+        c1 = peek(s)
+        if c1 == '<':
+            c2 = peek(s, 2)
+            if c2 == '?':
+                yield from instruction_tokenizer(s)
+            elif c2 == '!':
+                c3 = peek(s, 3)
+                if c3 == '-':
+                    yield from comment_tokenizer(s)
+                elif c3 in {'d', 'D'}:
+                    yield from doctype_tokenizer(s)
+                else:
+                    raise UnknownElement(s)
+            elif c2 == '/':
+                yield from closing_tokenizer(s)
             else:
-                raise UnknownElement(s)
-        elif c2 == '/':
-            yield from closing_tokenizer(s)
+                yield from opening_tokenizer(s)
+        elif c1 == '':
+            raise StopIteration  # EOF
         else:
-            yield from opening_tokenizer(s)
-    elif c1 == '':
-        raise StopIteration  # EOF
-    else:
-        yield from text_tokenizer(s)
-        s.seek(s.tell() - 1)
+            yield from text_tokenizer(s)
+        assert s.tell() > p, "%d should be larger than %d" % (s.tell(), p)
 
 
 def comment_tokenizer(s):
@@ -43,7 +42,6 @@ def comment_tokenizer(s):
         a += c
         c = s.read(1)
     yield (comment, a + '>') if c != '' else ('error', a)
-    yield from tok(s)
 
 
 def doctype_tokenizer(s):
@@ -53,7 +51,6 @@ def doctype_tokenizer(s):
         a += c
         c = s.read(1)
     yield (doctype, a + '>') if c != '' else ('error', a)
-    yield from tok(s)
 
 
 def opening_tokenizer(s):
@@ -74,7 +71,6 @@ def opening_tokenizer(s):
         yield (selfclosing, a + '>')  # reuse the whole 'text' to allow checks
     else:
         yield (opening, a + '>') if c != '' else (error, a)
-    yield from tok(s)
 
 
 def closing_tokenizer(s):
@@ -87,7 +83,6 @@ def closing_tokenizer(s):
         a += c
         c = s.read(1)
     yield (closing, a + '>') if c != '' else (error, a)
-    yield from tok(s)
 
 
 def instruction_tokenizer(s):
@@ -100,7 +95,6 @@ def instruction_tokenizer(s):
         a += c
         c = s.read(1)
     yield (instruction, a + '>') if c != '' else (error, a)
-    yield from tok(s)
 
 
 def text_tokenizer(s):
@@ -112,4 +106,3 @@ def text_tokenizer(s):
     yield (text, a)  # if c != '' else (error, a)
     if c != '':
         s.seek(s.tell() - 1)  # Finally... still ugly code
-    yield from tok(s)
