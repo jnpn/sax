@@ -6,6 +6,7 @@ from sax.tokenizer.exceptions import UnknownElement
 from sax.prelude import peek
 from sax.tokenizer.interface import comment, doctype, opening, \
     closing, selfclosing, instruction, text
+import sys; sys.setrecursionlimit(1800)  # recursion needed for >medium xml
 
 
 def tok(s):
