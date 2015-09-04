@@ -1,14 +1,12 @@
-import sys
 import io
 
 from nose.tools import assert_equal, raises, assert_not_equal
 
 from sax.tokenizer.gen import tok
-from sax.parser.gen import Root, Comment, Doctype, Text, Instruction, \
-    Tag, MalformedXML, xml
-
-
-sys.setrecursionlimit(1750)
+from sax.parser.interface import Root, Comment, Doctype, Text, Instruction, \
+    Tag
+from sax.parser.core import xml
+from sax.parser.exceptions import MalformedXML
 
 
 def strcopy(buf):
