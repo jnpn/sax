@@ -1,20 +1,7 @@
-from collections import namedtuple
-
 from sax.tokenizer.interface import comment, doctype, opening, \
     closing, selfclosing, instruction, text
-
-# Definitions
-
-Root = namedtuple('Root', 'children')
-Instruction = namedtuple('Instruction', 'instruction')
-Text = namedtuple('Text', 'text')
-Comment = namedtuple('Comment', 'comment')
-Doctype = namedtuple('Doctype', 'doctype')
-Tag = namedtuple('Tag', 'name attrs children')
-
-
-class MalformedXML(Exception):
-    pass
+from sax.parser.interface import Root, Instruction, Text, Comment, Doctype, Tag
+from sax.parser.exceptions import MalformedXML
 
 
 # Parser
@@ -103,7 +90,7 @@ def pp(xml, inds=0, indc='  '):
         pic('[unknown]', xml)
 
 
-def xmldepth(xml):
+def depth(xml):
 
     def isnode(n):
         return n == 'Root' or n == 'Tag'
@@ -115,6 +102,6 @@ def xmldepth(xml):
     k = xml.__class__.__name__
 
     if isnode(k):
-        return 1 + max(map(xmldepth, xml.children), default=0)
+        return 1 + max(map(depth, xml.children), default=0)
     elif isleaf(k):
         return 1
