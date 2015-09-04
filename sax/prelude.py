@@ -12,24 +12,22 @@ def log(f):
 
 
 def peek(stream, off=1):
+    '''
+    Stateless look at a stream.
+    Read <off> element(s), restore stream pos, returns the last element.
+    '''
     p = stream.tell()
     c = stream.read(off)[-1:]
     stream.seek(p)
     return c
 
 
-def peek(stream, off=1, span=0):
-    '''
-    >>> bs = io.StringIO('aBcDeF')
-    >>> peek(bs, off=2)
-    'B'
-    >>> peek(bs, off=2)
-    'B'
-    >>> peek(bs, off=2, span=2)
-    'BcD'  # BUG
-    '''
-    # print('[TODO] fix bug in peek, see docstring.')
-    p = stream.tell()
-    c = stream.read(off + span)[span - 1:]  # python can be weird...
-    stream.seek(p)
-    return c
+# def peek(stream, off=1, span=0):
+#     '''
+#     Extension of the above to return <span> element(s)
+#     '''
+#     # print('[TODO] fix bug in peek, see docstring.')
+#     p = stream.tell()
+#     c = stream.read(off + span)[span - 1:]  # python can be weird...
+#     stream.seek(p)
+#     return c
