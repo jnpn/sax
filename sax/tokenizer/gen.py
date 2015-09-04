@@ -18,7 +18,7 @@ def tok(s):
             c3 = peek(s, 3)
             if c3 == '-':
                 yield from comment_tokenizer(s)
-            elif c3 == 'D':
+            elif c3 in {'d', 'D'}:
                 yield from doctype_tokenizer(s)
             else:
                 raise UnknownElement(s)
