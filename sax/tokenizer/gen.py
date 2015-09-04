@@ -5,7 +5,9 @@ Generator based XML tokenizer (SAX like)
 from sax.tokenizer.exceptions import UnknownElement
 from sax.prelude import peek
 from sax.tokenizer.interface import comment, doctype, opening, \
-    closing, selfclosing, instruction, text
+    closing, selfclosing, instruction, text, error
+
+
 import sys; sys.setrecursionlimit(1800)  # recursion needed for >medium xml
 
 
@@ -71,7 +73,7 @@ def opening_tokenizer(s):
     if is_selfclosing:
         yield (selfclosing, a + '>')  # reuse the whole 'text' to allow checks
     else:
-        yield (opening, a + '>') if c != '' else ('error', a)
+        yield (opening, a + '>') if c != '' else (error, a)
     yield from tok(s)
 
 
@@ -84,7 +86,7 @@ def closing_tokenizer(s):
     while c != '>' and c != '':
         a += c
         c = s.read(1)
-    yield (closing, a + '>') if c != '' else ('error', a)
+    yield (closing, a + '>') if c != '' else (error, a)
     yield from tok(s)
 
 
@@ -97,7 +99,7 @@ def instruction_tokenizer(s):
     while c != '>' and c != '':
         a += c
         c = s.read(1)
-    yield (instruction, a + '>') if c != '' else ('error', a)
+    yield (instruction, a + '>') if c != '' else (error, a)
     yield from tok(s)
 
 
@@ -107,7 +109,7 @@ def text_tokenizer(s):
     while c != '<' and c != '':
         a += c
         c = s.read(1)
-    yield (text, a)  # if c != '' else ('error', a)
+    yield (text, a)  # if c != '' else (error, a)
     if c != '':
         s.seek(s.tell() - 1)  # Finally... still ugly code
     yield from tok(s)
