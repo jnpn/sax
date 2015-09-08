@@ -1,5 +1,5 @@
-
-* TODO General testing idea
+#+AUTHOR: Johan PONIN
+* TODO General testing idea					      :/Lazy:
   for each class, each field, write tests for boundaries:
    - nil value
    - zero length
@@ -29,6 +29,14 @@
      (text, comment, inst)
      ...
      for stateful order issue
+
+** TODO Laziness
+   Have a file cache map <space> <chunk>
+   Assuming a Tag <tag> (beg, end)
+   Memoize, on read, memoize file[beg:end] in the map
+   - reclaim space through LRU
+   - ...
+   class MemoizedFile { open, read, seek, close }
 
 * Tokenizer
 
@@ -164,6 +172,11 @@
 
     Need to rewrite as a single while True: generator ?
 
+** DONE add stream begin, end positions
+   see commit 5a7e2f4
+
+** DONE add stream line_no, line_offset
+   see commit e56dacb ? (not sure, and magit is broken right now)
 * XML parser
 
 ** DONE Stream of inst | otag | etag | text | ... -> Tree
