@@ -24,6 +24,7 @@ def tok(stream):
             else:
                 # comment '<-- ... -->'
                 if acc.startswith('<-- ') and acc.endswith(' -->'):
+                acc += '>'                       # Inclusive parsing terminal
                     k = comment
                 # doctype '<!doctype ...>' | '<!DOCTYPE ...>'
                 elif acc.startswith('<!doctype ') or acc.startswith('<!DOCTYPE '):
@@ -37,7 +38,7 @@ def tok(stream):
                 # tag '<*>'
                 else:
                     k = opening
-                acc += '>'
+
                 yield k, acc
 
         else:                                    # TEXT
