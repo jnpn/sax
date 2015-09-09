@@ -65,6 +65,12 @@ def test_tok_error_comment():
     assert_equal(t, e)
 
 
+def test_tok_error_instruction():
+    e = [(error, '<?instruction>')]
+    t = list(tok(io.StringIO('<?instruction>')))
+    assert_equal(t, e)
+
+
 def test_tok_doctype():
     e = [(doctype, '<!doctype>')]
     t = list(tok(io.StringIO('<!doctype>')))
