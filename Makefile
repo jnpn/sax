@@ -2,7 +2,7 @@ all:	clean build
 	@echo all
 
 clean:
-	rm *~
+	find . -type f -iname '*~' -execdir rm {} \;
 
 build:
 	python setup.py --version
