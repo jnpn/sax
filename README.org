@@ -177,6 +177,29 @@
 
 ** DONE add stream line_no, line_offset
    see commit e56dacb ? (not sure, and magit is broken right now)
+** TODO Cleaner two case `inheritance` logic: Tag | Text
+   flip the original loop upside down
+
+   case '<':
+     case '?': -> kind := instruction
+     case '!' ,'-': kind := comment
+     case 'd' | 'D': kind := doctype
+     _ tag {parsing}
+   _ text {parsing}
+
+   =>
+
+   case '<': {parsing-tag}
+   _ : {parsing-text}
+
+** TODO XML 1.1 spec conformant
+   [[http://www.w3.org/TR/2006/REC-xml11-20060816/#sec-well-formed]]
+   use official names (selfclosing -> empty)
+   add entities, cdata, ...
+   constraints
+     at least one element
+
+
 * XML parser
 
 ** DONE Stream of inst | otag | etag | text | ... -> Tree
