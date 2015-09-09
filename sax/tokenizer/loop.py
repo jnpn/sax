@@ -25,6 +25,9 @@ def tok(stream):
                 # comment '<-- ... -->'
                 if acc.startswith('<-- ') and acc.endswith(' -->'):
                 acc += '>'                       # Inclusive parsing terminal
+                # instruction '<? ... ?>'
+                if acc.startswith('<?') and acc.endswith('?>'):
+                    k = instruction
                     k = comment
                 # doctype '<!doctype ...>' | '<!DOCTYPE ...>'
                 elif acc.startswith('<!doctype ') or acc.startswith('<!DOCTYPE '):
