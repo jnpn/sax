@@ -40,7 +40,7 @@ def tagcheck(opentag, closetag):
 
 def tagname(tag):
     import re
-    rx = '</?(?P<tag>[^ >]+).*>'
+    rx = '</?(?P<tag>[^\s>]+).*>'
     return re.match(rx, tag, re.DOTALL).groupdict()['tag']
 
 
