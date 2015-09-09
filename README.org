@@ -1,5 +1,16 @@
 #+AUTHOR: Johan PONIN
-* TODO General testing idea					      :/Lazy:
+
+* Multiple implementations tolerant tests
+
+  #+BEGIN_SRC python
+  from sax.tokenizer.gen import tok, peek
+  #+END_SRC
+
+  Fucking Idiot, the impl is fixed !!! We need a way to
+  test both sax.tokenizer.loop and sax.tokenizer.gen.
+  Or more generally, multiple implementations.
+
+* TODO Generic testing idea					      :/Lazy:
   for each class, each field, write tests for boundaries:
    - nil value
    - zero length
