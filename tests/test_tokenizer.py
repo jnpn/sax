@@ -59,8 +59,8 @@ def test_tok_instruction():
     assert_equal(t, e)
 
 
-def test_tok_comment():
-    e = [(comment, '<!--foo>')]
+def test_tok_error_comment():
+    e = [(error, '<!--foo>')]
     t = list(tok(io.StringIO('<!--foo>')))
     assert_equal(t, e)
 
