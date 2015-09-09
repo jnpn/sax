@@ -1,3 +1,11 @@
+LESS=less -RS
+DMENU=dmenu -l 10 -i -p "xml: "
+
+# Let's make `try` the main rule.
+
+try:
+	python main.py tree `python main.py samples | $(DMENU)` | $(LESS)
+
 all:	clean build
 	@echo all
 
