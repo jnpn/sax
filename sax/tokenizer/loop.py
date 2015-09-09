@@ -12,40 +12,41 @@ def tok(stream):
 
     while peek(stream) != '':
         c = peek(stream)
-        k = None
         if c == '<':                             # * TAG
-            cc = peek(stream, off=2)
-            if cc == '?':
-                k = instruction                  # INSTRUCTION TAG
-            elif cc == '/':
-                k = closing                      # CLOSING TAG
-            elif cc == '!':
-                ccc = peek(stream, off=3)
-                if ccc == '-':
-                    k = comment                  # COMMENT TAG
-                elif ccc in {'d', 'D'}:
-                    k = doctype                  # DOCTYPE TAG
-                else:
-                    raise UnknownElement(c + cc + ccc)
-            else:
-                k = opening                      # OPEN TAG
-
-            # TAG work here
             acc = ''
             tac = stream.read(1)
             while tac != '>' and tac != '':
                 acc += tac
                 tac = stream.read(1)
-
             if tac == '':                        # PREMATURE EOF
                 k = error
                 yield k, acc
             else:
-                # hold on, self closing ?
-                if acc[-1] == '/':
-                    k = selfclosing              # SELFCLOSING
+                acc += '>'                       # Inclusive parsing terminal
 
-                acc += '>'
+                # instruction '<? ... ?>'
+                if acc.startswith('<?') and acc.endswith('?>'):
+                    k = instruction
+                elif acc.startswith('<?') and acc.endswith('?>'):
+                    k = error
+                # comment '<!-- ... -->'
+                elif acc.startswith('<!--') and acc.endswith('-->'):
+                    k = comment
+                elif acc.startswith('<!--') and not acc.endswith('-->'):
+                    k = error
+                # doctype '<!doctype ...>' | '<!DOCTYPE ...>'
+                elif acc.startswith('<!doctype') or acc.startswith('<!DOCTYPE'):
+                    k = doctype
+                # selfclosing '<.../>'
+                elif acc.endswith('/>') and not acc.startswith('</'):
+                    k = selfclosing
+                # closing '</...>'
+                elif acc.startswith('</'):
+                    k = closing
+                # tag '<*>'
+                else:
+                    k = opening
+
                 yield k, acc
 
         else:                                    # TEXT

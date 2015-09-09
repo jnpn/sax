@@ -36,16 +36,10 @@ def test_peek_above_left():
 
 
 def test_empty_text():
-    bs = 'yolo'
-    t = list(tok(io.StringIO(bs)))
-    e = [(text, bs)]
+    t = list(tok(io.StringIO('')))
+    e = []
     assert_equal(t, e)
 
-def test_text():
-    bs = 'yolo'
-    t = list(tok(io.StringIO(bs)))
-    e = [(text, bs)]
-    assert_equal(t, e)
 
 def test_tok_text():
     e = [(text, 'foo')]
@@ -53,7 +47,7 @@ def test_tok_text():
     assert_equal(t, e)
 
 
-def test_tok_tag():
+def test_tok_opening():
     e = [(opening, '<foo>')]
     t = list(tok(io.StringIO('<foo>')))
     assert_equal(t, e)
@@ -65,8 +59,8 @@ def test_tok_instruction():
     assert_equal(t, e)
 
 
-def test_tok_comment():
-    e = [(comment, '<!--foo>')]
+def test_tok_error_comment():
+    e = [(error, '<!--foo>')]
     t = list(tok(io.StringIO('<!--foo>')))
     assert_equal(t, e)
 
@@ -88,6 +82,7 @@ def test_text_opening():
     t = list(tok(io.StringIO(bs)))
     e = [(text, 'text'),
          (opening, '<foo>')]
+    assert_equal(t, e)
 
 
 def test_opening():
@@ -124,6 +119,12 @@ def test_closing():
     bs = '</foo>'
     i = list(tok(io.StringIO(bs)))
     e = [(closing, '</foo>')]
+    assert_equal(i, e)
+
+def test_selfclosing():
+    bs = '<foo/>'
+    i = list(tok(io.StringIO(bs)))
+    e = [(selfclosing, '<foo/>')]
     assert_equal(i, e)
 
 
@@ -164,6 +165,7 @@ def test_text_opening_text_closing():
          (opening, '<foo>'),
          (text, 'bar'),
          (closing, '</foo>')]
+    assert_equal(i, e)
 
 
 def test_opening_text_closing():
@@ -172,6 +174,7 @@ def test_opening_text_closing():
     e = [(opening, '<foo>'),
          (text, 'bar'),
          (closing, '</foo>')]
+    assert_equal(i, e)
 
 
 def test_instruction_text_instruction():
@@ -181,5 +184,3 @@ def test_instruction_text_instruction():
          (text, 'text'),
          (instruction, '<?instruction?>')]
     assert_equal(i, e)
-
-
