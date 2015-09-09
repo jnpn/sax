@@ -97,7 +97,10 @@ def instruction_tokenizer(s):
     while c != '>' and c != '':
         a += c
         c = s.read(1)
-    yield (instruction, a + '>') if c != '' else (error, a)
+    if not a.endswith('?'):
+        yield (error, a + '>')
+    else:
+        yield (instruction, a + '>') if c != '' else (error, a)
 
 
 def text_tokenizer(s):
