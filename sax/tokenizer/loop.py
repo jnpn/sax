@@ -27,7 +27,7 @@ def tok(stream):
                 # instruction '<? ... ?>'
                 if acc.startswith('<?') and acc.endswith('?>'):
                     k = instruction
-                elif acc.startswith('<?') and acc.endswith('?>'):
+                elif acc.startswith('<?') and not acc.endswith('?>'):
                     k = error
                 # comment '<!-- ... -->'
                 elif acc.startswith('<!--') and acc.endswith('-->'):
