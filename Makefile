@@ -17,3 +17,6 @@ build:
 	python setup.py sdist
 	@echo if this is a newer version, and you want to use it
 	@echo run 'pip install --upgrade .'
+
+test:
+	nosetests -v --with-id
