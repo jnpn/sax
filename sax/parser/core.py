@@ -1,3 +1,5 @@
+import re
+
 from sax.tokenizer.interface import comment, doctype, opening, \
     closing, selfclosing, instruction, text
 from sax.parser.interface import Root, Instruction, Text, Comment, Doctype, Tag
@@ -37,11 +39,11 @@ def tagcheck(opentag, closetag):
     if otn != ctn:
         raise MalformedXML(opentag, closetag)
 
+RX = re.compile('</?(?P<tag>[^\s>]+).*>', re.DOTALL)
+
 
 def tagname(tag):
-    import re
-    rx = '</?(?P<tag>[^\s>]+).*>'
-    return re.match(rx, tag, re.DOTALL).groupdict()['tag']
+    return re.match(RX, tag).groupdict()['tag']
 
 
 def fst(s):
@@ -56,6 +58,8 @@ def top(s):
 
 def pp(xml, inds=0, indc='  '):
 
+    IND = indc * inds
+
     def clean(s):
         import re
         s = s.strip()
@@ -63,7 +67,8 @@ def pp(xml, inds=0, indc='  '):
 
     def pic(k, t, post=lambda k, v: k + ' ' + v):
         '''Print Indented and Clean'''
-        print(indc * inds, post(k, clean(t)))
+        # print(indc * inds, post(k, clean(t)))
+        print(IND, post(k, clean(t)))
 
     k = xml.__class__.__name__
     if k == 'Root':

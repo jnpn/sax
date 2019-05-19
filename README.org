@@ -1,6 +1,6 @@
 #+AUTHOR: Johan PONIN
 
-* Multiple implementations tolerant tests
+* TODO Multiple implementations tolerant Tests
 
   #+BEGIN_SRC python
   from sax.tokenizer.gen import tok, peek
@@ -203,13 +203,25 @@
    case '<': {parsing-tag}
    _ : {parsing-text}
 
-** TODO XML 1.1 spec conformant
+** Stricter lexer.
+
+   see: ./samples/nest-pi*.xml
+
+   what is a <?php ... ?>
+   what is a <?php echo "<?foo ?>"; ?>
+   what is a <?php echo "<root><?foo ?></root>"; ?>
+** XML 1.1 spec conformant
    [[http://www.w3.org/TR/2006/REC-xml11-20060816/#sec-well-formed]]
    use official names (selfclosing -> empty)
    add entities, cdata, ...
    constraints
      at least one element
+     http://www.w3.org/TR/2006/REC-xml11-20060816/#NT-SDDecl
 
+*** TODO steps
+    - root shadow element
+    - document top level
+    - cdata for text, ...
 
 * XML parser
 
@@ -242,10 +254,48 @@
 
 ** monadic parser ?
 
-** objectional parser ?
+** objectional abstracted parser ?
    - no more explicit stateful stack recursion
    - A Root object walk the stream. On certain conditions, it
      will pass parsing to a new subclass (passing himself in need of
      recursion, REDUCE, SELF INSERT)
 
      Root.parse -> {...}, (Text | Inst | ...).parse -> ...
+
+** Sax event model ?
+
+   same parse loop, instead of yield, pass tag | text to abstract methods
+
+   #+BEGIN_SRC python
+   class Sax:
+     def parse(self, s):
+	 while not eof(s)
+	    opening -> self.opening(ns, tag, attrs)
+	    closing -> self.closing(ns, tag)
+	    ...
+	    text    -> self.text(text)
+     def text(self, text): pass
+     ...
+   #+END_SRC
+
+
+** sax parser dom model:
+   bidirectional ancestry
+   bidirectional sibling
+
+* pair parsing
+
+** pairs = () or [] or {} or <>
+
+** relation with pairs of length 1 -- aka o(1) recognition
+   and xml parsing, semi-arbitrary delimiter
+   arbitraty size, fixed meta-syntax <...>, arbitrary content
+
+** relation between
+   - (a (b (c (d . nil))))
+   - a , b , c , d
+
+* compilation
+
+** CFG
+   http://security.coverity.com/blog/2014/Nov/understanding-python-bytecode.html

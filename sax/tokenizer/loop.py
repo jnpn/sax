@@ -24,30 +24,7 @@ def tok(stream):
             else:
                 acc += '>'                       # Inclusive parsing terminal
 
-                # instruction '<? ... ?>'
-                if acc.startswith('<?') and acc.endswith('?>'):
-                    k = instruction
-                elif acc.startswith('<?') and not acc.endswith('?>'):
-                    k = error
-                # comment '<!-- ... -->'
-                elif acc.startswith('<!--') and acc.endswith('-->'):
-                    k = comment
-                elif acc.startswith('<!--') and not acc.endswith('-->'):
-                    k = error
-                # doctype '<!doctype ...>' | '<!DOCTYPE ...>'
-                elif acc.startswith('<!doctype') or acc.startswith('<!DOCTYPE'):
-                    k = doctype
-                # selfclosing '<.../>'
-                elif acc.endswith('/>') and not acc.startswith('</'):
-                    k = selfclosing
-                # closing '</...>'
-                elif acc.startswith('</'):
-                    k = closing
-                # tag '<*>'
-                else:
-                    k = opening
-
-                yield k, acc
+                yield tag(acc)
 
         else:                                    # TEXT
             k = text
@@ -61,3 +38,31 @@ def tok(stream):
                 stream.seek(stream.tell() - 1)  # must rewind before '<'
                 # only if not at the end.
             yield k, acc
+
+
+def tag(acc):
+    '''
+    instruction '<? ... ?>'
+    comment '<!-- ... -->'
+    doctype '<!doctype ...>' | '<!DOCTYPE ...>'
+    selfclosing '<.../>'
+    closing '</...>'
+    tag '<*>'
+    '''
+    if acc.startswith('<?') and acc.endswith('?>'):
+        k = instruction
+    elif acc.startswith('<?') and not acc.endswith('?>'):
+        k = error
+    elif acc.startswith('<!--') and acc.endswith('-->'):
+        k = comment
+    elif acc.startswith('<!--') and not acc.endswith('-->'):
+        k = error
+    elif acc.startswith('<!doctype') or acc.startswith('<!DOCTYPE'):
+        k = doctype
+    elif acc.endswith('/>') and not acc.startswith('</'):
+        k = selfclosing
+    elif acc.startswith('</'):
+        k = closing
+    else:
+        k = opening
+    return k, acc

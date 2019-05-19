@@ -19,5 +19,7 @@ def is_balanced(stream):
     is_balanced <foo></foo> -> True
     is_balanced <foo>       -> False
     is_balanced <foo></bar> -> False
+
+    Fri Oct  9 17:33:55 CEST 2015: see: checker.py
     '''
     raise NotImplementedError("Interface stub only")

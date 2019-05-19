@@ -2,7 +2,7 @@ from nose.tools import assert_equal, assert_not_equal
 import io
 from sax.tokenizer.interface import opening, closing, selfclosing, \
     text, comment, doctype, instruction, error
-from sax.tokenizer.gen import tok, peek
+from sax.tokenizer.loop import tok, peek
 
 
 def test_peek():
