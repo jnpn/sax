@@ -2,11 +2,13 @@
 
 
 * Sax:
-  pure python XML tokenizer and parser
 
-  status: alpha, see TODOS for more
+  Pure python XML tokenizer and parser
+
+  Status: alpha, see TODOS for more
 
 * Usage:
+
   #+BEGIN_SRC python
   python main.py # to see usage
 
