@@ -10,7 +10,7 @@ with open(path.join(here, 'DESCRIPTION.rst')) as f:
 
 setup(
     name='sax',
-    version='0.0.1a1',
+    version='0.0.1a2',
     description='sax like xml tokenizer and parser',
     long_description=long_description,
     url='http://ponin.johan.free.fr/',
