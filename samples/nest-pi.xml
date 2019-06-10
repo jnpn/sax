@@ -1,0 +1,7 @@
+<xml>
+<?php
+  $pi = "<?php echo 'wat'; ?>"
+  $xml = "<xml><nop/></xml>";
+  echo ">>>" . $xml;
+?>
+</xml>

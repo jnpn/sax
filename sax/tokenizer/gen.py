@@ -41,7 +41,10 @@ def comment_tokenizer(s):
     while c != '>' and c != '':
         a += c
         c = s.read(1)
-    yield (comment, a + '>') if c != '' else ('error', a)
+    if not a.endswith('--'):
+        yield (error, a + '>')
+    else:
+        yield (comment, a + '>') if c != '' else (error, a)
 
 
 def doctype_tokenizer(s):
@@ -50,7 +53,7 @@ def doctype_tokenizer(s):
     while c != '>' and c != '':
         a += c
         c = s.read(1)
-    yield (doctype, a + '>') if c != '' else ('error', a)
+    yield (doctype, a + '>') if c != '' else (error, a)
 
 
 def opening_tokenizer(s):
@@ -94,7 +97,10 @@ def instruction_tokenizer(s):
     while c != '>' and c != '':
         a += c
         c = s.read(1)
-    yield (instruction, a + '>') if c != '' else (error, a)
+    if not a.endswith('?'):
+        yield (error, a + '>')
+    else:
+        yield (instruction, a + '>') if c != '' else (error, a)
 
 
 def text_tokenizer(s):

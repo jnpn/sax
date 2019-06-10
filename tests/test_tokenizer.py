@@ -2,7 +2,7 @@ from nose.tools import assert_equal, assert_not_equal
 import io
 from sax.tokenizer.interface import opening, closing, selfclosing, \
     text, comment, doctype, instruction, error
-from sax.tokenizer.gen import tok, peek
+from sax.tokenizer.loop import tok, peek
 
 
 def test_peek():
@@ -62,6 +62,12 @@ def test_tok_instruction():
 def test_tok_error_comment():
     e = [(error, '<!--foo>')]
     t = list(tok(io.StringIO('<!--foo>')))
+    assert_equal(t, e)
+
+
+def test_tok_error_instruction():
+    e = [(error, '<?instruction>')]
+    t = list(tok(io.StringIO('<?instruction>')))
     assert_equal(t, e)
 
 
