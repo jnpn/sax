@@ -1,3 +1,9 @@
+"""
+attempt at enforcing nesting rules for html class trees
+
+status: very alpha
+"""
+
 from sax.tokenizer.interface import *
 from sax.tokenizer import loop
 
