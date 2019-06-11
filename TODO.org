@@ -214,17 +214,31 @@
     what is a <?php echo "<?foo ?>"; ?>
     what is a <?php echo "<root><?foo ?></root>"; ?>
 *** XML 1.1 spec conformant
-    [[http://www.w3.org/TR/2006/REC-xml11-20060816/#sec-well-formed]]
-    use official names (selfclosing -> empty)
-    add entities, cdata, ...
-    constraints
-      at least one element
-      http://www.w3.org/TR/2006/REC-xml11-20060816/#NT-SDDecl
+    - spec: [[http://www.w3.org/TR/2006/REC-xml11-20060816/#sec-well-formed]]
+    - use official names (selfclosing -> empty)
+    - add entities, cdata, ...
+    - add namespaces
+    - constraints
+      - at least one element
+      - http://www.w3.org/TR/2006/REC-xml11-20060816/#NT-SDDecl
 
 **** TODO steps
      - root shadow element
      - document top level
      - cdata for text, ...
+
+
+** Performance
+
+*** share tag names
+    have a string cache ala lisp
+
+*** share attribute names and values
+    another string cache
+
+*** Lazy tree ?
+    - return the root, on property access, compute the rest ?
+    - interactions with the token stream ?
 
 ** XML parser
 
@@ -286,7 +300,7 @@
     bidirectional ancestry
     bidirectional sibling
 
-** pair parsing
+** IDEA: pair parsing framework
 
 *** pairs = () or [] or {} or <>
 
