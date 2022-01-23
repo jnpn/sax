@@ -32,10 +32,6 @@ class Name:
     def __repr__(self):
         return f'<Name {self.ns}:.{self.n}>' if self.ns else f'<Name {self.n}>'
 
-def preload():
-    ''' just some names to init Name.nss '''
-    return [Name(tag,'xhtml') for tag in 'div pre p a main nav button form input ul li ol section footer h1 h2 h3 h4 h5 h6 span video head title body html'.split(' ')]
-
 RX = re.compile('</?(?P<tag>[^\s>]+) ?(?P<attrs>.*)>', re.DOTALL)
 
 def name(n, sep=':') -> Name:
