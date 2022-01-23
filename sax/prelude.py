@@ -31,3 +31,12 @@ def peek(stream, off=1):
 #     c = stream.read(off + span)[span - 1:]  # python can be weird...
 #     stream.seek(p)
 #     return c
+
+def logged(f):
+    fn_name = f.__name__
+    def _(*ks,**kw):
+        print(f'[log.{fn_name}]', ks, kw, end='')
+        v = f(*ks, **kw)
+        print('->',v)
+        return v
+    return _
