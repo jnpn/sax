@@ -288,6 +288,20 @@
 
 ** pair parsing
 
+*** DONE attributes
+
+*** DONE namespaces
+
+*** TODO lazy attributes
+
+    don't parse them between tokenize / parse
+    let Tag class delay things until print
+    redistribute Tag / Name logic (Tag wraps names... it's all stupid)
+
+*** TODO dedup / memoized tags
+
+    reuse Name.nss tree to save memory ?
+
 *** pairs = () or [] or {} or <>
 
 *** relation with pairs of length 1 -- aka o(1) recognition
@@ -302,3 +316,17 @@
 
 *** CFG
     http://security.coverity.com/blog/2014/Nov/understanding-python-bytecode.html
+
+** Traversal
+
+*** sizzle ?
+
+*** xpath
+
+** Tests
+
+*** generator
+
+*** benchmark mem:time
+
+*** very large file handling
