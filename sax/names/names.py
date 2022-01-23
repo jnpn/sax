@@ -27,7 +27,6 @@ class Name:
         return self == other
 
     def __eq__(self, other):
-        print('=', self, other)
         return self.ns == other.ns and self.n == self.n
 
     def __repr__(self):
