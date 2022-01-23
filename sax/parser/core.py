@@ -33,7 +33,7 @@ def xml(token_stream):
     return fst(stack)
 
 def tagcheck(o,c):
-    assert o == c, "Wrong open/close tags: <%s> | </%s>" % (o, c) # o.closeable_by(c), "Wrong open/close tags: <%s> | </%s>" % (o, c)
+    assert o.closeable_by(c), "Wrong open/close tags: <%s> | </%s>" % (o, c)
     if o != c:
         raise MalformedXML(o, c)
 

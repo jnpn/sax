@@ -23,6 +23,9 @@ class Name:
             else:
                 Name.nss[self.ns] = {self.n: self}
 
+    def closeable_by(self, other):
+        return self == other
+
     def __eq__(self, other):
         print('=', self, other)
         return self.ns == other.ns and self.n == self.n
