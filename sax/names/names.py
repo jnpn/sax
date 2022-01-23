@@ -30,7 +30,7 @@ class Name:
         return self.ns == other.ns and self.n == self.n
 
     def __repr__(self):
-        return f'<Name {self.ns}:.{self.n}>' if self.ns else f'<Name {self.n}>'
+        return f'.{self.ns}:{self.n}' if self.ns else f'.{self.n}'
 
 RX = re.compile('</?(?P<tag>[^\s>]+) ?(?P<attrs>.*)>', re.DOTALL)
 
