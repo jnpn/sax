@@ -7,6 +7,7 @@ from sax.prelude import peek
 from sax.tokenizer.interface import comment, doctype, opening, \
     closing, selfclosing, instruction, text, error
 
+import sax.names.names as names
 
 def tok(s):
     p = s.tell()
@@ -71,9 +72,9 @@ def opening_tokenizer(s):
         is_selfclosing = True
 
     if is_selfclosing:
-        yield (selfclosing, a + '>')  # reuse the whole 'text' to allow checks
+        yield (selfclosing, names.parse(a + '>'))  # reuse the whole 'text' to allow checks
     else:
-        yield (opening, a + '>') if c != '' else (error, a)
+        yield (opening, names.parse(a + '>')) if c != '' else (error, a)
 
 
 def closing_tokenizer(s):
@@ -85,7 +86,7 @@ def closing_tokenizer(s):
     while c != '>' and c != '':
         a += c
         c = s.read(1)
-    yield (closing, a + '>') if c != '' else (error, a)
+    yield (closing, names.parse(a + '>')) if c != '' else (error, a)
 
 
 def instruction_tokenizer(s):

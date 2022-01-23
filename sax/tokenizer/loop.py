@@ -7,6 +7,7 @@ from sax.prelude import peek
 from sax.tokenizer.interface import comment, doctype, opening, \
     closing, selfclosing, instruction, text, error
 
+import sax.names.names as names
 
 def tok(stream):
 
@@ -65,4 +66,4 @@ def tag(acc):
         k = closing
     else:
         k = opening
-    return k, acc
+    return k, names.parse(acc)
