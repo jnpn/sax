@@ -84,7 +84,7 @@ def parsekv(pairs, seppair=' ', sepkv="="): #-> list[(Name, Option[str])]:
         xs = kv.split(sepkv)
         if len(xs) == 2: # k=v
             k,v = xs
-            return name(k),v
+            return name(k),v.replace('"','')
         if len(xs) == 1: # k
             k = xs[0]
             return name(k)
