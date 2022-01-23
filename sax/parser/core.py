@@ -5,8 +5,6 @@ from sax.tokenizer.interface import comment, doctype, opening, \
 from sax.parser.interface import Root, Instruction, Text, Comment, Doctype, Tag
 from sax.parser.exceptions import MalformedXML
 
-from sax.parser.name import Name
-
 # Parser
 
 def xml(token_stream):
@@ -17,7 +15,8 @@ def xml(token_stream):
         if k == instruction:
             top(stack).children.append(Instruction(t))
         elif k == opening:
-            stack.append(Tag(t, [], []))            # SHIFT
+            tagname, attrs = t
+            stack.append(Tag(tagname, attrs, []))            # SHIFT
         elif k == text:
             top(stack).children.append(Text(t))     # SELF INSERT
         elif k == comment:
@@ -27,42 +26,16 @@ def xml(token_stream):
         elif k == selfclosing:
             top(stack).children.append(Tag(t, [], []))  # SELF INSERT
         elif k == closing:
+            tagname, attrs = t
             sub = stack.pop()
-            tagcheck(sub.name, t)                   # CHECK
+            tagcheck(sub.name, tagname)                   # CHECK
             top(stack).children.append(sub)         # REDUCE
     return fst(stack)
 
-
-def tagcheck(opentag, closetag):
-    otn = tagname(opentag)
-    ctn = tagname(closetag)
-    assert otn == ctn, "Wrong open/close tags: <%s> | </%s>" % (otn, ctn)
-    if otn != ctn:
-        raise MalformedXML(opentag, closetag)
-
-RX = re.compile('</?(?P<tag>[^\s>]+) ?(?P<attrs>.*)>', re.DOTALL)
-
-def name(n, sep=':') -> (str, str):
-    if sep in n:
-        ns,nm,*rest = n.split(':')
-        if rest:
-            raise Exception(f'{nm} is malformed. shoulde be [<ns>:]<name>')
-        else:
-            # return ns,name
-            return Name(nm, ns)
-    else:
-        return Name(n)
-
-def tagname(tag):
-    m = re.match(RX, tag)
-    g = m.groupdict()
-    tag = g['tag']
-    tag = name(tag) if tag else tag
-    attrs = g['attrs']
-    attrs = [name(a.split('=')[0]) for a in attrs.split(' ')]
-    print(tag, attrs)
-    return g['tag']
-
+def tagcheck(o,c):
+    assert o == c, "Wrong open/close tags: <%s> | </%s>" % (o, c) # o.closeable_by(c), "Wrong open/close tags: <%s> | </%s>" % (o, c)
+    if o != c:
+        raise MalformedXML(o, c)
 
 def fst(s):
     return s[0]
@@ -80,7 +53,7 @@ def pp(xml, inds=0, indc='  '):
 
     def clean(s):
         import re
-        s = s.strip()
+        s = str(s).strip()
         return re.sub(r'[\t\r\n ]+', ' ', s)
 
     def pic(k, t, post=lambda k, v: k + ' ' + v):
