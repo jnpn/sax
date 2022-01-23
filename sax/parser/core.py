@@ -5,6 +5,7 @@ from sax.tokenizer.interface import comment, doctype, opening, \
 from sax.parser.interface import Root, Instruction, Text, Comment, Doctype, Tag
 from sax.parser.exceptions import MalformedXML
 
+from sax.parser.name import Name
 
 # Parser
 
@@ -39,11 +40,28 @@ def tagcheck(opentag, closetag):
     if otn != ctn:
         raise MalformedXML(opentag, closetag)
 
-RX = re.compile('</?(?P<tag>[^\s>]+).*>', re.DOTALL)
+RX = re.compile('</?(?P<tag>[^\s>]+) ?(?P<attrs>.*)>', re.DOTALL)
 
+def name(n, sep=':') -> (str, str):
+    if sep in n:
+        ns,nm,*rest = n.split(':')
+        if rest:
+            raise Exception(f'{nm} is malformed. shoulde be [<ns>:]<name>')
+        else:
+            # return ns,name
+            return Name(nm, ns)
+    else:
+        return Name(n)
 
 def tagname(tag):
-    return re.match(RX, tag).groupdict()['tag']
+    m = re.match(RX, tag)
+    g = m.groupdict()
+    tag = g['tag']
+    tag = name(tag) if tag else tag
+    attrs = g['attrs']
+    attrs = [name(a.split('=')[0]) for a in attrs.split(' ')]
+    print(tag, attrs)
+    return g['tag']
 
 
 def fst(s):
