@@ -40,6 +40,33 @@ def tok(stream):
             yield k, acc
 
 
+import re
+
+tag_regex = '<(?P<tagname>[a-zA-Z0-9:_\-]+)( +(?P<attrs>.*))>'
+attr_kv_regex = '(?P<key>[a-zA-Z0-9:\-]+)(="(?P<val>[a-zA-Z0-9:\-]+)")?' ### thanks https://regexr.com/6e6rh
+
+class KV:
+    def __init__(self, pair):
+        k,_,v = pair
+        self.k = k
+        self.v = v if v else False
+
+    def __repr__(self):
+        if self.v:
+            return f'{self.k}="{self.v}"'
+        else:
+            return f'{self.k}={self.v}'
+
+def attrs(s):
+    '''
+    >>> attrs('a="b" c="d" e="f"')
+    [a="b", c="d", e="f"]
+    >>> attrs('a="b" c e="f"')
+    [a="b", c=False, e="f"]
+    '''
+    return [KV(p) for p in re.findall(attr_kv_regex, s)]
+
+
 def tag(acc):
     '''
     instruction '<? ... ?>'
@@ -65,4 +92,12 @@ def tag(acc):
         k = closing
     else:
         k = opening
+        m = re.match(tag_regex, acc)
+        if m:
+            g = m.groupdict()
+            tagname = g['tagname']
+            s_attrs = g.get('attrs', None)
+            if s_attrs:
+                print(tagname, attrs(s_attrs))
+            
     return k, acc
