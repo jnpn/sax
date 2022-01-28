@@ -1,3 +1,7 @@
 ### sax ###
 
-sax is a simple xml tokenizer with a naive token stream of xml builder.
+sax.py -- pure python xml parser
+
+Builds an in-memory tree of the xml file. With namespaced tag and attribute names.
+
+End.

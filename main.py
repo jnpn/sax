@@ -1,8 +1,21 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+
+'''sax.py -- pure python xml parser
+
+Builds an in-memory tree of the xml file. With namespaced tag and attribute names.
+
+End.
 '''
 
-sax.py -- pure python xml parser
-
-'''
+__author__ = "Johan Ponin"
+__copyright__ = "Copyright 2019-, jnpn"
+__credits__ = ["Johan Ponin"]
+__license__ = "GPLv3"
+__version__ = "0.0.1a2"
+__maintainer__ = "Johan Ponin"
+__email__ = "johan.ponin.pro@gmail.com"
+__status__ = "Alpha"
 
 import os
 import pprint
@@ -49,14 +62,24 @@ def samples():
 @click.command()
 def about():
     """Shows information about this."""
+    print()
+    print(__doc__)
+    for info in ['__author__', '__copyright__',
+                 '__credits__', '__email__', '__license__',
+                 '__maintainer__', '__status__', '__version__',
+                 '__file__']:
+        print(info.replace('_',''), ':', eval(info))
     print({
         'author': 'jnpn',
         'version': '0.01a',
         'license': 'GPLv3'
     })
+    print()
 
 @click.group()
-def cli():
+@click.version_option(__version__)
+@click.pass_context
+def cli(ctx):
     pass
 
 cli.add_command(samples)
@@ -67,4 +90,3 @@ cli.add_command(about)
 
 if __name__ == '__main__':
     cli()
-
