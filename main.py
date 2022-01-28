@@ -39,6 +39,19 @@ def tree(xmlfile):
     from sax.parser.core import pp, xml
     print(pp(xml(lt.tok(xmlfile))))
 
+def t(fn='./samples/cv.meta.xml'):
+    for k,t in lt.tok(open(fn)):
+        print(k,t, type(t))
+
+# def u(fn='./samples/cv.meta.xml', show=True):
+def u(fn='./samples/lclo_m.xml', show=True):
+    print(f'parsing {fn}')
+    from sax.parser.core import pp, xml
+    tree = xml(lt.tok(open(fn)))
+    if show:
+        pp(tree)
+    return tree
+
 
 @click.command()
 def samples():
