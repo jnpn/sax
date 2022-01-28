@@ -2,6 +2,8 @@ import re
 
 from collections import namedtuple
 
+from sax.names.names import name, Name
+
 Root = namedtuple('Root', 'children')
 Instruction = namedtuple('Instruction', 'instruction')
 Text = namedtuple('Text', 'text')
@@ -33,9 +35,9 @@ class Tag:
         m = re.match(self.tag_regex, self.spec, re.MULTILINE + re.DOTALL)
         if m:
             g = m.groupdict()
-            self.name = g['tagname']
+            self.name = name(g['tagname'])
             a = g['attrs'] or ''
-            self.attrs = re.findall(self.attr_kv_regex, a)
+            self.attrs = [name(k,v) for k,_,v in re.findall(self.attr_kv_regex, a)]
             self.populated = True
         # print('[populated]', self)
 

@@ -65,10 +65,10 @@ def pp(xml, inds=0, indc='  '):
         s = s.strip()
         return re.sub(r'[\t\r\n ]+', ' ', s)
 
-    def pic(k, t, post=lambda k, v: k + ' ' + v):
+    def pic(k, t, post=lambda k, v: k + ' ' + str(v)):
         '''Print Indented and Clean'''
         # print(indc * inds, post(k, clean(t)))
-        print(IND, post(k, clean(t)))
+        print(IND, post(k, t)) # clean(t)))
 
     k = xml.__class__.__name__
     if k == 'Root':

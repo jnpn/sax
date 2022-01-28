@@ -5,6 +5,8 @@ import click
 import sax.tokenizer.gen as gt
 import sax.tokenizer.loop as lt
 
+import sax.names.names as ns
+
 src = './samples/dbus-systemd1.xml'
 
 tsg = list(gt.tok(open(src)))
@@ -50,6 +52,9 @@ def u(fn='./samples/lclo_m.xml', show=True):
     tree = xml(lt.tok(open(fn)))
     if show:
         pp(tree)
+    N = ns.Name
+    import pprint
+    print('xmlns', pprint.pformat(N.nss))
     return tree
 
 
