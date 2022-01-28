@@ -63,7 +63,8 @@ def pp(xml, inds=0, indc='  '):
     elif k == 'Doctype':
         pic(k, xml.doctype)
     elif k == 'Tag':
-        pic(k, xml.name)
+        attrs = ' '.join(f'{k}={v}' for k,v in xml.attrs)
+        pic(k, str(xml.name) + ' ' + attrs)
         for c in xml.children:
             pp(c, inds + 1)
         pic(k, xml.name, post=lambda k, v: ' /')
