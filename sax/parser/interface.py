@@ -34,6 +34,11 @@ class Tag:
         else:
             raise MalformedXML(self, closing, "Wrong open/close tags: '%s' | '%s'" % (self.name, closing.name))
 
+    def __eq__(self, other):
+        return self.name == other.name \
+            and self.attrs == other.attrs \
+            and self.children == other.children
+
     def __repr__(self):
         return f'<{self.__class__.__name__} {self.name} {self.attrs} {self.children}>'
 
