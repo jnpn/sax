@@ -4,6 +4,38 @@ from sax.tokenizer.interface import opening, closing, selfclosing, \
     text, comment, doctype, instruction, error
 from sax.tokenizer.loop import tok, peek
 
+'''
+
+src = './samples/dbus-systemd1.xml'
+
+tsg = list(gt.tok(open(src)))
+tsl = list(lt.tok(open(src)))
+
+
+def k(n=32):
+    for k, t in tsl[:n]:
+        print(k, t)
+
+
+diffs = [(g, l) for g, l in zip(tsg, tsl) if g != l]
+
+'''
+
+'''
+Intersting, parsers have different streams. Mostly out of
+sync because of the selfclosing `tokenistic sugar` trick,
+causing more tokens emitted by gen.tok:
+
+<sctag/> -> (opening, sctag), (closing, sctag)
+
+instead of
+
+<sctag/> -> (selfclosing, sctag)
+
+but may resolve the same trees when parsed.
+'''
+
+
 
 def test_peek():
     bnil = ''
