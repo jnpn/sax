@@ -12,7 +12,7 @@ from sax.parser.exceptions import MalformedXML
 def test_0():
     s = io.StringIO('<foo>x</foo>')
     t = xml(tok(s))
-    e = Root([Tag('<foo>', [], [Text('x')])])
+    e = Root([Tag('<foo>', [Text('x')])])
     assert_equal(t, e)
 
 
@@ -20,7 +20,7 @@ def test_1():
     '''bug'''
     s = io.StringIO('<foo><bar>duh</bar></foo>')
     t = xml(tok(s))
-    e = Root([Tag('<foo>', [], [Tag('<bar>', [], [Text('duh')])])])
+    e = Root([Tag('<foo>', [Tag('<bar>', [Text('duh')])])])
     assert_equal(t, e)
 
 
@@ -42,47 +42,39 @@ def test_xml():
                 'either version 2.1 of the License, or\n  (at your option) '
                 'any later version.\n-->'),
         Text(text='\n\n'),
-        Tag(name='<busconfig>',
-            attrs=[],
+        Tag('<busconfig>',
             children=[
                 Text(text='\n\n        '),
                 Tag(
-                    name='<policy user="root">',
-                    attrs=[],
+                    '<policy user="root">',
                     children=[Text(text='\n                '),
                               Tag(
-                                  name='<allow own="org.freedesktop.'
+                                  '<allow own="org.freedesktop.'
                                   'timedate1"/>',
-                                  attrs=[],
                                   children=[]),
                               Text(text='\n                '),
                               Tag(
-                                  name='<allow send_destination="org.'
+                                  '<allow send_destination="org.'
                                   'freedesktop.timedate1"/>',
-                                  attrs=[],
                                   children=[]),
                               Text(text='\n                '),
                               Tag(
-                                  name='<allow receive_sender="org.'
+                                  '<allow receive_sender="org.'
                                   'freedesktop.timedate1"/>',
-                                  attrs=[],
                                   children=[]),
                               Text(text='\n        ')]),
                 Text(text='\n\n        '),
                 Tag(
-                    name='<policy context="default">',
-                    attrs=[],
+                    '<policy context="default">',
                     children=[Text(text='\n                '),
                               Tag(
-                                  name='<allow send_destination="'
+                                  '<allow send_destination="'
                                   'org.freedesktop.timedate1"/>',
-                                  attrs=[],
                                   children=[]),
                               Text(text='\n                '),
                               Tag(
-                                  name='<allow receive_sender="org.'
+                                  '<allow receive_sender="org.'
                                   'freedesktop.timedate1"/>',
-                                  attrs=[],
                                   children=[]),
                               Text(text='\n        ')]),
                 Text(text='\n\n')]),
@@ -117,7 +109,4 @@ def test_pp():
 @raises(AssertionError, MalformedXML)
 def test_malformed():
     s = io.StringIO('<foo><bar>xxx</foo></bar>')
-    try:
-        t = xml(tok(s))
-    except MalformedXML:
-        pass
+    t = xml(tok(s))

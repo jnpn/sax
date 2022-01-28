@@ -7,6 +7,8 @@ import sax.tokenizer.loop as lt
 
 import sax.names.names as ns
 
+SAMPLES = './samples'
+
 src = './samples/dbus-systemd1.xml'
 
 tsg = list(gt.tok(open(src)))
@@ -61,7 +63,6 @@ def u(fn='./samples/lclo_m.xml', show=True):
 @click.command()
 def samples():
     """Lists the XML provided samples."""
-    SAMPLES = './samples'
     for sample in os.listdir(SAMPLES):
         print(os.path.sep.join([SAMPLES, sample]))
 
