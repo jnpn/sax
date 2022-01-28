@@ -24,7 +24,7 @@ class Name:
         if isinstance(other, str):
             other = name(other)
         # print('=', self, other)
-        return self.ns == other.ns and self.n == self.n
+        return self.ns == other.ns and self.n == other.n
 
     def __str__(self, sep=':'):
         return self.ns + sep + self.n if self.ns else self.n
