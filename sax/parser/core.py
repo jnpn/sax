@@ -27,23 +27,9 @@ def xml(token_stream):
             top(stack).children.append(Tag(t))      # SELF INSERT
         elif k == closing:
             sub = stack.pop()
-            tagcheck(sub, t)             # CHECK
+            sub.is_closeable_by(t)                  # CHECK
             top(stack).children.append(sub)         # REDUCE
     return fst(stack)
-
-
-def tagcheck(opentag, closetag):
-    otn = opentag.name
-    ctn = closetag[2:-1]
-    assert otn == ctn, "Wrong open/close tags: '%s' | '%s'" % (otn, ctn)
-    if otn != ctn:
-        raise MalformedXML(opentag, closetag)
-
-RX = re.compile('</?(?P<tag>[^\s>]+).*>', re.DOTALL)
-
-
-def tagname(tag):
-    return re.match(RX, tag).groupdict()['tag']
 
 
 def fst(s):

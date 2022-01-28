@@ -40,6 +40,12 @@ class Tag:
             self.attrs = [name(k,v) for k,_,v in re.findall(self.attr_kv_regex, a)]
             self.populated = True
         # print('[populated]', self)
+    def is_closeable_by(self, closing):
+        otn = self.name
+        ctn = name(closing[2:-1])
+        assert otn == ctn, "Wrong open/close tags: '%s' | '%s'" % (otn, ctn)
+        if otn != ctn:
+            raise MalformedXML(opentag, closetag)
 
     def __repr__(self):
         if self._is_on_():
