@@ -1,3 +1,5 @@
+import re
+
 from collections import namedtuple
 
 Root = namedtuple('Root', 'children')
@@ -5,8 +7,43 @@ Instruction = namedtuple('Instruction', 'instruction')
 Text = namedtuple('Text', 'text')
 Comment = namedtuple('Comment', 'comment')
 Doctype = namedtuple('Doctype', 'doctype')
-Tag = namedtuple('Tag', 'name attrs children')
+# Tag = namedtuple('Tag', 'name attrs children')
 
+class Tag:
+
+    def __init__(self, spec):
+        self.spec = spec
+        self.tag_regex = '</?\s*(?P<tagname>[a-zA-Z0-9:_\-]+)(\s+(?P<attrs>.*))?>'
+        ### thanks https://regexr.com/6e6rh
+        self.attr_kv_regex = '(?P<key>[a-zA-Z0-9:\-]+)(="(?P<val>[^"]+)")?'
+        self._off_()
+        self._on_()
+
+    def _is_on_(self):
+        return self.populated
+
+    def _off_(self):
+        self.populated = False
+        self.name = ""
+        self.attrs = []
+        self.children = []
+        # print('[reset]', self)
+
+    def _on_(self):
+        m = re.match(self.tag_regex, self.spec, re.MULTILINE + re.DOTALL)
+        if m:
+            g = m.groupdict()
+            self.name = g['tagname']
+            a = g['attrs'] or ''
+            self.attrs = re.findall(self.attr_kv_regex, a)
+            self.populated = True
+        # print('[populated]', self)
+
+    def __repr__(self):
+        if self._is_on_():
+            return f'<{self.__class__.__name__} {self.name} {self.attrs} {self.children}>'
+        else:
+            return f'<{self.__class__.__name__} {self.spec} unset>'
 
 def xml(stream):
     '''Stream -> XML'''

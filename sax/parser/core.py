@@ -16,7 +16,7 @@ def xml(token_stream):
         if k == instruction:
             top(stack).children.append(Instruction(t))
         elif k == opening:
-            stack.append(Tag(t, [], []))            # SHIFT
+            stack.append(Tag(t))            # SHIFT
         elif k == text:
             top(stack).children.append(Text(t))     # SELF INSERT
         elif k == comment:
@@ -24,18 +24,18 @@ def xml(token_stream):
         elif k == doctype:
             top(stack).children.append(Doctype(t))  # SELF INSERT
         elif k == selfclosing:
-            top(stack).children.append(Tag(t, [], []))  # SELF INSERT
+            top(stack).children.append(Tag(t))      # SELF INSERT
         elif k == closing:
             sub = stack.pop()
-            tagcheck(sub.name, t)                   # CHECK
+            tagcheck(sub, t)             # CHECK
             top(stack).children.append(sub)         # REDUCE
     return fst(stack)
 
 
 def tagcheck(opentag, closetag):
-    otn = tagname(opentag)
-    ctn = tagname(closetag)
-    assert otn == ctn, "Wrong open/close tags: <%s> | </%s>" % (otn, ctn)
+    otn = opentag.name
+    ctn = closetag[2:-1]
+    assert otn == ctn, "Wrong open/close tags: '%s' | '%s'" % (otn, ctn)
     if otn != ctn:
         raise MalformedXML(opentag, closetag)
 
