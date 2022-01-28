@@ -12,20 +12,19 @@ Doctype = namedtuple('Doctype', 'doctype')
 
 class Tag:
 
-    def __init__(self, spec):
-        self.spec = spec
-        self.tag_regex = '</?\s*(?P<tagname>[a-zA-Z0-9:_\-]+)(\s+(?P<attrs>.*))?/? ?>'
-        ### thanks https://regexr.com/6e6rh
-        self.attr_kv_regex = '(?P<key>[a-zA-Z0-9:\-]+)(="(?P<val>[^"]+)")?'
-        self.children = []
-        m = re.match(self.tag_regex, self.spec, re.MULTILINE + re.DOTALL)
+    def __init__(self, spec:str, children=[]):
+        self.tag_r    = '</?\s*(?P<tag>[a-zA-Z0-9:_\-]+)(\s+(?P<attrs>.*))?/? ?>'
+        self.kv_r     = '(?P<key>[a-zA-Z0-9:\-]+)(="(?P<val>[^"]+)")?'     ### thanks https://regexr.com/6e6rh
+        self.spec     = spec
+        self.children = children[:]
+        m = re.match(self.tag_r, self.spec, re.MULTILINE + re.DOTALL)
         if m:
             g = m.groupdict()
-            self.name = name(g['tagname'])
+            self.name = name(g['tag'])
             a = g['attrs'] or ''
-            self.attrs = [name(k,v) for k,_,v in re.findall(self.attr_kv_regex, a)]
+            self.attrs = [(name(k),v) for k,_,v in re.findall(self.kv_r, a)]
         else:
-            raise Exception(spec, ' fails', self.tag_regex, m)
+            raise Exception(spec, ' fails', self.tag_r, m)
 
     def is_closeable_by(self, closing):
         otn = self.name
