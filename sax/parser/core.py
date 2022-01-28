@@ -27,7 +27,8 @@ def xml(token_stream):
             top(stack).children.append(Tag(t))      # SELF INSERT
         elif k == closing:
             sub = stack.pop()
-            sub.is_closeable_by(t)                  # CHECK
+            tag = Tag(t)                            # t = </...>
+            sub.is_closeable_by(tag)                # CHECK
             top(stack).children.append(sub)         # REDUCE
     return fst(stack)
 
