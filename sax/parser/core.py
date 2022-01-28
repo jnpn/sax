@@ -16,7 +16,7 @@ def xml(token_stream):
         if k == instruction:
             top(stack).children.append(Instruction(t))
         elif k == opening:
-            stack.append(Tag(t))            # SHIFT
+            stack.append(Tag(t))                    # SHIFT
         elif k == text:
             top(stack).children.append(Text(t))     # SELF INSERT
         elif k == comment:
@@ -47,15 +47,9 @@ def pp(xml, inds=0, indc='  '):
 
     IND = indc * inds
 
-    def clean(s):
-        import re
-        s = s.strip()
-        return re.sub(r'[\t\r\n ]+', ' ', s)
-
-    def pic(k, t, post=lambda k, v: k + ' ' + str(v)):
+    def pic(k, t, post=lambda k, v: str(k) + ' ' + str(v)):
         '''Print Indented and Clean'''
-        # print(indc * inds, post(k, clean(t)))
-        print(IND, post(k, t)) # clean(t)))
+        print(IND, post(k, t))
 
     k = xml.__class__.__name__
     if k == 'Root':
