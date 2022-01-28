@@ -2,7 +2,7 @@ import re
 
 from collections import namedtuple
 
-from sax.parser.exceptions import MalformedXML
+from sax.parser.exceptions import UnbalancedClosingTags, MalformedXML
 from sax.names.names import name, Name
 
 Root = namedtuple('Root', 'children')
@@ -25,14 +25,14 @@ class Tag:
             a = g['attrs'] or ''
             self.attrs = [(name(k),v) for k,_,v in re.findall(self.kv_r, a)]
         else:
-            raise Exception(spec, ' fails', self.tag_r, m)
+            raise MalformedXML(spec, ' fails', self.tag_r, m)
 
     def is_closeable_by(self, closing):
         ''' Tag -> Tag -> Boolean '''
         if self.name == closing.name:
             return True
         else:
-            raise MalformedXML(self, closing, "Wrong open/close tags: '%s' | '%s'" % (self.name, closing.name))
+            raise UnbalancedClosingTags(self, closing)
 
     def __eq__(self, other):
         return self.name == other.name \

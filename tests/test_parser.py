@@ -6,7 +6,7 @@ from sax.tokenizer.gen import tok
 from sax.parser.interface import Root, Comment, Doctype, Text, Instruction, \
     Tag
 from sax.parser.core import xml
-from sax.parser.exceptions import MalformedXML
+from sax.parser.exceptions import UnbalancedClosingTags, MalformedXML
 
 
 def test_0():
@@ -106,7 +106,7 @@ def test_pp():
     pass
 
 
-@raises(AssertionError, MalformedXML)
+@raises(AssertionError, UnbalancedClosingTags)
 def test_malformed():
     s = io.StringIO('<foo><bar>xxx</foo></bar>')
     t = xml(tok(s))

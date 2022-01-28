@@ -2,7 +2,7 @@ import io
 
 from nose.tools import assert_equal, raises, assert_not_equal
 
-from sax.parser.exceptions import MalformedXML
+from sax.parser.exceptions import UnbalancedClosingTags, MalformedXML
 import sax.parser.interface as c
 
 
@@ -19,7 +19,7 @@ def test_is_closeable_by():
     v = c.Tag('</foo>')
     assert_equal(u.is_closeable_by(v), True)
 
-@raises(MalformedXML)
+@raises(UnbalancedClosingTags)
 def test_is_closeable_by_not():
     u = c.Tag('<foo>')
     w = c.Tag('</bar>')
