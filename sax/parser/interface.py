@@ -9,37 +9,24 @@ Instruction = namedtuple('Instruction', 'instruction')
 Text = namedtuple('Text', 'text')
 Comment = namedtuple('Comment', 'comment')
 Doctype = namedtuple('Doctype', 'doctype')
-# Tag = namedtuple('Tag', 'name attrs children')
 
 class Tag:
 
     def __init__(self, spec):
         self.spec = spec
-        self.tag_regex = '</?\s*(?P<tagname>[a-zA-Z0-9:_\-]+)(\s+(?P<attrs>.*))?>'
+        self.tag_regex = '</?\s*(?P<tagname>[a-zA-Z0-9:_\-]+)(\s+(?P<attrs>.*))?/? ?>'
         ### thanks https://regexr.com/6e6rh
         self.attr_kv_regex = '(?P<key>[a-zA-Z0-9:\-]+)(="(?P<val>[^"]+)")?'
-        self._off_()
-        self._on_()
-
-    def _is_on_(self):
-        return self.populated
-
-    def _off_(self):
-        self.populated = False
-        self.name = ""
-        self.attrs = []
         self.children = []
-        # print('[reset]', self)
-
-    def _on_(self):
         m = re.match(self.tag_regex, self.spec, re.MULTILINE + re.DOTALL)
         if m:
             g = m.groupdict()
             self.name = name(g['tagname'])
             a = g['attrs'] or ''
             self.attrs = [name(k,v) for k,_,v in re.findall(self.attr_kv_regex, a)]
-            self.populated = True
-        # print('[populated]', self)
+        else:
+            raise Exception(spec, ' fails', self.tag_regex, m)
+
     def is_closeable_by(self, closing):
         otn = self.name
         ctn = name(closing[2:-1])
@@ -48,10 +35,7 @@ class Tag:
             raise MalformedXML(opentag, closetag)
 
     def __repr__(self):
-        if self._is_on_():
-            return f'<{self.__class__.__name__} {self.name} {self.attrs} {self.children}>'
-        else:
-            return f'<{self.__class__.__name__} {self.spec} unset>'
+        return f'<{self.__class__.__name__} {self.name} {self.attrs} {self.children}>'
 
 def xml(stream):
     '''Stream -> XML'''
