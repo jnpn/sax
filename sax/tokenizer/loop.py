@@ -2,6 +2,8 @@
 Classic imperative attempt
 '''
 
+import io
+
 from sax.tokenizer.exceptions import UnknownElement
 from sax.prelude import peek
 from sax.tokenizer.interface import comment, doctype, opening, \
@@ -13,31 +15,31 @@ def tok(stream):
     while peek(stream) != '':
         c = peek(stream)
         if c == '<':                             # * TAG
-            acc = ''
+            acc = io.StringIO()
             tac = stream.read(1)
             while tac != '>' and tac != '':
-                acc += tac
+                acc.write(tac)
                 tac = stream.read(1)
             if tac == '':                        # PREMATURE EOF
                 k = error
-                yield k, acc
+                yield k, acc.getvalue()
             else:
-                acc += '>'                       # Inclusive parsing terminal
+                acc.write('>')                   # Inclusive parsing terminal
 
-                yield tag(acc)
+                yield tag(acc.getvalue())
 
         else:                                    # TEXT
             k = text
-            acc = ''
+            acc = io.StringIO()
             tec = stream.read(1)
             while tec != '<' and tec != '':
-                acc += tec
+                acc.write(tec)
                 tec = stream.read(1)
 
             if peek(stream) != '':
                 stream.seek(stream.tell() - 1)  # must rewind before '<'
                 # only if not at the end.
-            yield k, acc
+            yield k, acc.getvalue()
 
 
 def tag(acc):
