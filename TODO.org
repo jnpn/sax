@@ -225,6 +225,7 @@
      - root shadow element
      - document top level
      - cdata for text, ...
+     - namespaces [90%]
 
 ** XML parser
 
@@ -302,3 +303,17 @@
 
 *** CFG
     http://security.coverity.com/blog/2014/Nov/understanding-python-bytecode.html
+
+** TODO [#A] name reuse
+
+** TODO [#B] empty text tag
+
+** text tag memoization
+
+** text tag compression
+
+** json output
+
+** tag tree generator
+
+** more tests
