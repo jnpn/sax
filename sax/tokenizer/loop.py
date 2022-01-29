@@ -12,10 +12,13 @@ from sax.tokenizer.interface import comment, doctype, opening, \
 
 def tok(stream):
 
+    acc = io.StringIO()
+
     while peek(stream) != '':
         c = peek(stream)
         if c == '<':                             # * TAG
-            acc = io.StringIO()
+            acc.truncate(0)
+            acc.seek(0)
             tac = stream.read(1)
             while tac != '>' and tac != '':
                 acc.write(tac)
@@ -30,7 +33,8 @@ def tok(stream):
 
         else:                                    # TEXT
             k = text
-            acc = io.StringIO()
+            acc.truncate(0)
+            acc.seek(0)
             tec = stream.read(1)
             while tec != '<' and tec != '':
                 acc.write(tec)
