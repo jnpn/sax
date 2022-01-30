@@ -27,21 +27,13 @@ class Trie:
             self.leaves().append(v)
         elif len(ks) > 1: # RECURSE
             k,*ks = ks
-            # if self.has(k):
-            #     return self.sub().get(k).put(ks,v)
             if not self.has(k): # ENSURE self.sub().get(k) is Trie
-                s = Node(k)
-                self.sub()[k] = s
+                self.sub()[k] = Node(k)
             self.sub().get(k).put(ks,v)
         else:
             k = ks[0]
-            # if self.has(k):
-            #     self.sub().get(k).leaves().append(v)
-            # else:
-            #     assert len(ks) == 1
             if not self.has(k):
-                s = Node(k)
-                self.sub()[k] = s
+                self.sub()[k] = Node(k)
             self.sub().get(k).leaves().append(v)
         return self
 
@@ -52,7 +44,7 @@ class Trie:
                 return self.sub().get(k).get(ks)
             else:
                 raise Exception(k, 'not found')
-        return self.leaves()
+        return self
 
     def Put(self, v, *ks):
         return self.put(ks, v)
