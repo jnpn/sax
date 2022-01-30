@@ -5,12 +5,30 @@ module for namespaced names
 import re
 
 class Name:
+    requests = 0
+    count = 0
     nss = {}
 
     def __init__(self, n, ns=None):
         self.n = n
         self.ns = ns
         self.__ns_register()
+
+    def __in__(n,ns=None):
+        ''' (ns,n) -> Maybe Name '''
+        Name.requests += 1
+        r = False
+        # n
+        if not ns:
+            r = Name.nss.get(n, False)# Maybe Name
+        # ns:n
+        else:
+            nso = Name.nss.get(ns, False) # {}
+            if nso:
+                r = nso.get(n, False)  # Maybe Name
+        if r:
+            # print('reused', n, ns, r)
+            return r
 
     def __ns_register(self):
         if self.ns:
@@ -19,6 +37,7 @@ class Name:
                 e[self.n] = self
             else:
                 Name.nss[self.ns] = {self.n: self}
+            Name.count += 1
 
     def __eq__(self, other):
         if isinstance(other, str):
@@ -45,6 +64,6 @@ def name(n, sep=':') -> Name:
             error = f'{name} is malformed. shoulde be [<ns>:]<name>'
             raise Exception(error,n)
         else:
-            return Name(name, ns)
+            return Name.__in__(name,ns) or Name(name, ns)
     else:
-        return Name(n)
+        return Name.__in__(n) or Name(n)
