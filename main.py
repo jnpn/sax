@@ -88,5 +88,25 @@ cli.add_command(demo_tokenizer)
 cli.add_command(demo_parser)
 cli.add_command(about)
 
+from sax.parser.core import pp, xml
+from sax.names.names import Name
+def bch(fn=SAMPLES+'/cv.xml'):
+    return xml(lt.tok(open(fn))), Name
+
+
+import timeit
+
+'''
+timeit.timeit(bch, number=3)
+>>> 0.22704315300052258 # str
+>>> 0.22025592699992558 # StringIO
+timeit.timeit(bch, number=30)
+>>> 2.130348282000341
+>>> 2.126030572999298
+timeit.timeit(bch, number=100)
+>>> 7.017249186000299
+>>> 7.329132808000395
+'''
+
 if __name__ == '__main__':
     cli()
