@@ -6,6 +6,13 @@ class Trie:
     }
     '''
 
+    def __len__(self):
+        c = sum(len(s) for s in self.sub())
+        return c + len(self.leaves())
+
+    def depth(self):
+        return 1 + max([s.depth() for s in self.sub().values()] or [0])
+
     def sub(self): # {}
         pass
 
