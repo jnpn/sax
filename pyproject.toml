@@ -11,7 +11,7 @@ python = "^3.13"
 
 
 [tool.poetry.group.test.dependencies]
-pynose = "^1.5.3"
+pytest = "^8.3.4"
 
 [build-system]
 requires = ["poetry-core"]

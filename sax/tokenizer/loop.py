@@ -2,9 +2,10 @@
 Classic imperative attempt
 '''
 
-from sax.tokenizer.exceptions import UnknownElement
-from sax.prelude import peek
-from sax.tokenizer.interface import comment, doctype, opening, \
+from ..prelude import peek
+
+from .exceptions import UnknownElement
+from .interface import comment, doctype, opening, \
     closing, selfclosing, instruction, text, error
 
 
