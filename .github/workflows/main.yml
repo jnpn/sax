@@ -25,8 +25,9 @@ jobs:
           pip install pytest
      
       - name: Test with PyTest
-        run: pytest --html=tests/Reports/Report.html  
- 
+        # run: pytest --html=tests/Reports/Report.html
+        run: pytest
+
       - name: actions-pytest
         # You may pin to the exact commit or the version.
         # uses: xoviat/actions-pytest@6e27d0810b47a907cc45bc96092599f072b28870
