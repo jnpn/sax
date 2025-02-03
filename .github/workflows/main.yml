@@ -23,10 +23,12 @@ jobs:
         run: |
           python -m pip install --upgrade pip
           pip install pytest
+          pip install coverage
+          pip install pytest-cov
 
       - name: Test with PyTest
         # run: pytest --html=tests/Reports/Report.html
-        run: pytest
+        run: pytest --cov
 
       - name: actions-pytest
         # You may pin to the exact commit or the version.
