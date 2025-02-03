@@ -17,6 +17,12 @@
   python main.py tree <xml> # parses then pretty-prints resulting tree
   #+END_SRC
 
+* Tests:
+
+  #+begin_src shell
+  PYTHONPATH=. poetry run pytest --verbose tests/test_tokenizer.py
+  #+end_src
+
 * Submodules:
 
   #+BEGIN_SRC bash
