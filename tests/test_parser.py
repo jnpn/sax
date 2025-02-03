@@ -1,6 +1,6 @@
 import io
 
-from nose.tools import assert_equal, raises, assert_not_equal
+import pytest
 
 from sax.tokenizer.gen import tok
 from sax.parser.interface import Root, Comment, Doctype, Text, Instruction, \
@@ -13,7 +13,7 @@ def test_0():
     s = io.StringIO('<foo>x</foo>')
     t = xml(tok(s))
     e = Root([Tag('<foo>', [Text('x')])])
-    assert_equal(t, e)
+    assert t == e
 
 
 def test_1():
@@ -21,7 +21,7 @@ def test_1():
     s = io.StringIO('<foo><bar>duh</bar></foo>')
     t = xml(tok(s))
     e = Root([Tag('<foo>', [Tag('<bar>', [Text('duh')])])])
-    assert_equal(t, e)
+    assert t == e
 
 
 def test_xml():
@@ -79,14 +79,14 @@ def test_xml():
                               Text(text='\n        ')]),
                 Text(text='\n\n')]),
         Text(text='\n')])
-    assert_equal(t, e)
+    assert t == e
 
 
 def test_xml_cv():
     s = open('./samples/cv.xml')
     t = len(xml(tok(s)).children)
     e = None
-    assert_not_equal(t, e)
+    assert t != e
 
 
 def test_pp():
@@ -106,7 +106,7 @@ def test_pp():
     pass
 
 
-@raises(AssertionError, UnbalancedClosingTags)
 def test_malformed():
     s = io.StringIO('<foo><bar>xxx</foo></bar>')
-    t = xml(tok(s))
+    with pytest.raises(UnbalancedClosingTags):
+        t = xml(tok(s))
