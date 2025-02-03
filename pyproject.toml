@@ -1,0 +1,18 @@
+[tool.poetry]
+name = "sax"
+version = "0.1.1"
+description = "pure python xml parser"
+authors = ["jnpn <johan.ponin.pro@gmail.com>"]
+license = "No License"
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.13"
+
+
+[tool.poetry.group.test.dependencies]
+pynose = "^1.5.3"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
