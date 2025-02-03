@@ -9,7 +9,7 @@
 
 * Usage:
 
-  #+BEGIN_SRC python
+  #+BEGIN_SRC shell
   python main.py # to see usage
 
   python main.py samples # lists samples
