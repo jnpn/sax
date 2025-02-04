@@ -274,11 +274,11 @@
     #+BEGIN_SRC python
     class Sax:
       def parse(self, s):
-	  while not eof(s)
-	     opening -> self.opening(ns, tag, attrs)
-	     closing -> self.closing(ns, tag)
-	     ...
-	     text    -> self.text(text)
+          while not eof(s)
+             opening -> self.opening(ns, tag, attrs)
+             closing -> self.closing(ns, tag)
+             ...
+             text    -> self.text(text)
       def text(self, text): pass
       ...
     #+END_SRC
