@@ -1,4 +1,4 @@
-name: PyTest Framework - Python
+name: sax ci workflow
 on:
   push:
     branches: [ "dev" ]
@@ -9,36 +9,27 @@ permissions:
   contents: read
 
 jobs:
-  test:
-    runs-on: ubuntu-latest
+  ci:
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ["3.9", "3.10", "3.11", "3.12", "3.13"]
+        poetry-version: ["latest", "main", "1.8.4"]
+        os: [ubuntu-22.04, macos-latest, windows-latest]
+    runs-on: ${{ matrix.os }}  
 
     steps:
       - uses: actions/checkout@v4
-      - name: Set up Python 3.13
-        uses: actions/setup-python@v4
+      - uses: actions/setup-python@v5
         with:
-          python-version: 3.13
-
-      - name: Install dependencies
-        run: |
-          python -m pip install --upgrade pip
-          pip install pytest
-          pip install coverage
-          pip install pytest-cov
-
-      - name: Test with PyTest
-        # run: pytest --html=tests/Reports/Report.html
-        run: pytest --cov
-
-      - name: actions-pytest
-        # You may pin to the exact commit or the version.
-        # uses: xoviat/actions-pytest@6e27d0810b47a907cc45bc96092599f072b28870
-        uses: xoviat/actions-pytest@0.1-alpha2
+          python-version: ${{ matrix.python-version }}
+      - name: Run image
+        uses: abatilo/actions-poetry@v3
         with:
-          # Arguments for the pytest command
-          verbose: true
-          emoji: true
-          job-summary: true
-          # custom-arguments: '-q'
-          click-to-expand: true
-          report-title: 'Test Report (sax)'
+          poetry-version: ${{ matrix.poetry-version }}
+      - name: View poetry --help
+        run: poetry --help      
+      - name: tests
+        run: poetry run pytest
+      - name: build
+        run: poetry build
