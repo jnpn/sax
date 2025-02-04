@@ -316,4 +316,23 @@
 
 ** tag tree generator
 
-** more tests
+** more tests                                                          :test:
+
+** property based testing (hypothesis)                                 :test:
+
+** streaming pretty printer                                           :degen:
+*** then
+
+#+begin_src ocaml
+  let rec infinity = (stream parse) (stream pp) (infinity)
+#+end_src
+
+
+* TODOS-DEVOPS
+
+** TODO bump2version
+
+- create main version file
+- show version in cli
+- global bump2version config
+- version files config
