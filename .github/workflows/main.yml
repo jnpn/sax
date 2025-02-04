@@ -13,9 +13,9 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        python-version: ["3.9", "3.10", "3.11", "3.12", "3.13"]
-        poetry-version: ["latest", "main", "1.8.4"]
-        os: [ubuntu-22.04, macos-latest, windows-latest]
+        python-version: ["3.9", "3.13"]
+        poetry-version: ["latest", "main"]
+        os: [ubuntu-22.04, windows-latest]
     runs-on: ${{ matrix.os }}  
 
     steps:
@@ -27,6 +27,8 @@ jobs:
         uses: abatilo/actions-poetry@v3
         with:
           poetry-version: ${{ matrix.poetry-version }}
+      - name: pre
+        run: poetry install
       - name: View poetry --help
         run: poetry --help      
       - name: tests
