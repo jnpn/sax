@@ -1,5 +1,6 @@
 #+AUTHOR: Johan PONIN
 
+#+STARTUP: indent
 
 * TODOS
 
